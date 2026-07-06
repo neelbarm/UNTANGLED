@@ -1,0 +1,137 @@
+import type { WeekTheme } from './types'
+
+// The 60-day arc, broken into 3 phases across ~9 weeks (Day 1–60). Each week
+// has one dominant theme but keeps all four goals moving. "Film this" is the
+// week's flagship Reel so the challenge is always producing content.
+
+export const PHASES = [
+  {
+    name: 'Phase 1 — Foundation',
+    range: 'Days 1–21',
+    thesis:
+      'Build the machine before you chase the number. Lock the routine, open the accounts, start the paper trail, and show up on camera every single day so the audience forms.',
+  },
+  {
+    name: 'Phase 2 — Compounding',
+    range: 'Days 22–42',
+    thesis:
+      'The habits are automatic now — push volume. More reps in the gym, more sim/live trades journaled, more outreach, more apartment viewings, more Reels with real proof.',
+  },
+  {
+    name: 'Phase 3 — Conversion',
+    range: 'Days 43–60',
+    thesis:
+      'Turn effort into outcomes. Close the weight goal, hit the trading target with discipline intact, convert conversations into offers, sign a lease, and package the whole story.',
+  },
+] as const
+
+export const WEEK_THEMES: WeekTheme[] = [
+  {
+    week: 1,
+    phase: 'Foundation',
+    title: 'Set the Machine',
+    focus: 'Systems over intensity. Define baselines, install the daily loop, and post Day 1 publicly so there is no backing out.',
+    bodyMove: 'Establish weigh-in time, a repeatable breakfast, and a 5-day gym cadence. Log everything, change nothing drastic.',
+    tradingMove: 'Open/verify prop-firm eval accounts. Trade sim or minimum size. Write the trading plan and risk rules before any position.',
+    careerMove: 'Rewrite bio + resume around "founder who ships." Make a target list of 30 people/firms in VC/startups/AI.',
+    apartmentMove: 'Set budget, must-haves, and 3 candidate neighborhoods. Gather income + ID documents into one folder.',
+    contentMove: 'Announce the 60-day challenge. Establish the account promise and the daily format viewers can expect.',
+    filmThis: 'The "Day 1 of 60" manifesto Reel — say the four goals out loud on camera.',
+  },
+  {
+    week: 2,
+    phase: 'Foundation',
+    title: 'Prove Consistency',
+    focus: 'Hit every daily rep with zero drama. The story this week is "he actually shows up." Boring is the flex.',
+    bodyMove: 'Two full weeks of the same wake time, weigh-ins, and workouts. Start a daily 8k step floor from commute + walks.',
+    tradingMove: 'One clean setup, defined risk, journal every trade with screenshots. Grade process, not P&L.',
+    careerMove: 'Send first 10 outreach messages. Publish one build/learning post to look hireable.',
+    apartmentMove: 'Book first 3–5 viewings. Start the options tracker; score each place the same way.',
+    contentMove: 'Start a recurring daily series (e.g. "5am to market open"). Reply to every comment to seed community.',
+    filmThis: 'A "7 days in, here\'s the routine that runs my life" recap.',
+  },
+  {
+    week: 3,
+    phase: 'Foundation',
+    title: 'Tighten the Process',
+    focus: 'Find the leaks. Where does the day break? Fix the schedule, not your willpower.',
+    bodyMove: 'Audit meals for consistency (protein + repeatable options). Protect sleep window — same lights-out nightly.',
+    tradingMove: 'Cap trades/day and max daily loss. Introduce a hard stop after the rule is hit — walk away, film the discipline.',
+    careerMove: 'Turn 3 cold contacts into short calls. Ship a small proof-of-work (teardown, demo, or repo).',
+    apartmentMove: 'Narrow to 1–2 neighborhoods. Pre-fill application docs so you can move within an hour of finding "the one."',
+    contentMove: 'Post your first "here\'s what I got wrong" honesty Reel — vulnerability builds trust and retention.',
+    filmThis: 'A pre-market checklist walkthrough — screen recording + voiceover of your discipline.',
+  },
+  {
+    week: 4,
+    phase: 'Compounding',
+    title: 'Add Volume',
+    focus: 'Foundation is automatic — now scale the inputs. This is the "gears turning" week.',
+    bodyMove: 'Add one conditioning session; push step floor to 9–10k. Weekly weigh-in trend should be down and steady.',
+    tradingMove: 'Increase reps of A+ setups only. Weekly review of every trade: what repeated, what to cut.',
+    careerMove: 'Outreach to 15 this week. Ask each contact for one intro — turn one relationship into three.',
+    apartmentMove: 'Second-round viewings on top options. Test the actual commute to campus/where you trade.',
+    contentMove: 'Launch a second series (e.g. weekly "scorecard reveal"). Start batching filming to stay ahead.',
+    filmThis: 'A "day in the life on a class day" — 5am gym → class → build → post, all in 30 seconds.',
+  },
+  {
+    week: 5,
+    phase: 'Compounding',
+    title: 'Compound & Batch',
+    focus: 'Halfway. Systemize content production so it never competes with the real work.',
+    bodyMove: 'Same routine, higher standard on food consistency. Review 30-day weight trend, not daily noise.',
+    tradingMove: 'Focus on your single best setup. Discipline metric this week: % of days you followed your own rules.',
+    careerMove: 'Convert momentum into a warm pipeline of 5+ ongoing conversations. Publish a "what I\'m building" thread.',
+    apartmentMove: 'Shortlist final 2–3 apartments. Verify total move-in cost and lease terms in writing.',
+    contentMove: 'Batch-film 6–8 Reels in one session. Save 2–3 as buffer for busy class/market days.',
+    filmThis: 'A "30 days in — the honest scoreboard" progress Reel across all four goals.',
+  },
+  {
+    week: 6,
+    phase: 'Compounding',
+    title: 'Raise the Standard',
+    focus: 'Comfort is the enemy. Increase difficulty in one dimension per goal without breaking the base.',
+    bodyMove: 'Progressive overload in the gym; keep steps + sleep locked. Consistency has earned the right to push.',
+    tradingMove: 'Only take trades that pass every checklist item. Zero rule-breaks is the win — track the streak.',
+    careerMove: 'Ask for a real conversation with 2 dream firms/founders. Bring a specific idea or teardown to each.',
+    apartmentMove: 'Get pre-approved / paperwork verified so you can sign fast. Decide your walk-away price.',
+    contentMove: 'Double down on the best-performing series. Cut what nobody watches — data over ego.',
+    filmThis: 'A "what building an MVP + trading + gym in one day actually looks like" time-blocked Reel.',
+  },
+  {
+    week: 7,
+    phase: 'Conversion',
+    title: 'Convert Momentum',
+    focus: 'Start closing. Every system now points at an outcome, not just activity.',
+    bodyMove: 'Sharpen adherence for the final stretch. Trend toward the 10-lb goal via the same boring habits.',
+    tradingMove: 'Protect the progress — tighten risk as the number gets closer. Green does not mean loosen discipline.',
+    careerMove: 'Move conversations toward interviews, trials, or contract work. Follow up on every warm thread.',
+    apartmentMove: 'Make an offer / submit an application on the top choice. Have backup ready in case it falls through.',
+    contentMove: 'Tell the mid-challenge transformation story with real receipts (journal shots, scorecards, before/after habits).',
+    filmThis: 'A "the conversation that changed my job search" storytelling Reel (no names/details you can\'t share).',
+  },
+  {
+    week: 8,
+    phase: 'Conversion',
+    title: 'Close the Loops',
+    focus: 'Finish what you started in each lane. Reduce open threads, force decisions.',
+    bodyMove: 'Final push on habits, not crash tactics. Let the 8 weeks of consistency do the work.',
+    tradingMove: 'Trade only when the edge is obvious. Preserve capital and discipline into the finish.',
+    careerMove: 'Push for a decision or next step from your top targets. Get one concrete opportunity in hand.',
+    apartmentMove: 'Sign the lease or lock the move-in plan. Line up logistics and moving day.',
+    contentMove: 'Build anticipation for the finale. Ask the audience to predict your final scoreboard.',
+    filmThis: 'A "48 hours before the finish line" high-stakes vlog Reel.',
+  },
+  {
+    week: 9,
+    phase: 'Conversion',
+    title: 'Finish & Package',
+    focus: 'Day 60. Land the plane, then turn the whole run into a story that opens the next door.',
+    bodyMove: 'Final weigh-in on camera. Show the trend line, not just the number.',
+    tradingMove: 'Final review: rules-followed %, biggest lesson, and the process you\'ll keep forever.',
+    careerMove: 'Publish the 60-day case study as proof-of-work. It IS your portfolio and your pitch.',
+    apartmentMove: 'Move-in / first-night-in-NYC content. Close the apartment arc on camera.',
+    contentMove: 'Ship the finale recap + "what\'s next." Convert 60 days of trust into your next launch or role.',
+    filmThis: 'The "60 days changed my life — here\'s the receipts" finale Reel across all four goals.',
+  },
+]
