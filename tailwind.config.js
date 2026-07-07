@@ -5,24 +5,35 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: {
-          950: '#0a0a0b',
-          900: '#101013',
-          850: '#16161a',
-          800: '#1c1c22',
-          700: '#26262e',
-          600: '#33333d',
-        },
-        ember: {
-          400: '#ff9d4d',
-          500: '#ff7a18',
-          600: '#f2610c',
+        // Semantic theme tokens (driven by CSS variables in index.css).
+        canvas: 'var(--canvas)',
+        sidebar: 'var(--sidebar)',
+        card: 'var(--card)',
+        elevated: 'var(--elevated)',
+        line: 'var(--line)',
+        'line-strong': 'var(--line-strong)',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        faint: 'var(--faint)',
+        accent: 'var(--accent)',
+        'accent-soft': 'var(--accent-soft)',
+        hover: 'var(--hover)',
+        // Muted, calmer goal hues (used as small dots + status accents).
+        goal: {
+          body: '#5b9d78',
+          trading: '#c88a49',
+          career: '#5b86c9',
+          apartment: '#9a78c2',
+          meta: '#c0a24a',
         },
         signal: {
-          green: '#3ddc84',
-          red: '#ff5a5a',
-          blue: '#5aa9ff',
+          green: '#5b9d78',
+          red: '#cf6b6b',
+          blue: '#5b86c9',
         },
+      },
+      boxShadow: {
+        soft: 'var(--shadow)',
       },
       fontFamily: {
         sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],

@@ -33,7 +33,7 @@ export function Review({ store }: { store: Store }) {
 
   return (
     <div>
-      <Thesis text={REVIEW_THESIS} accent="#ffd24d" label="Weekly Review" />
+      <Thesis text={REVIEW_THESIS} accent="#c0a24a" label="Weekly Review" />
 
       <Section title="The Sunday Reset" subtitle="One honest hour that makes the whole system self-correcting.">
         <Card>
@@ -44,11 +44,11 @@ export function Review({ store }: { store: Store }) {
       <Section title="Weekly Review Template" subtitle="Score the week, face the misses, pre-decide next week. Saved per week.">
         <Card>
           <div className="mb-4 flex items-center gap-2">
-            <span className="text-sm text-white/50">Week</span>
+            <span className="text-sm text-faint">Week</span>
             <select
               value={week}
               onChange={(e) => setWeek(Number(e.target.value))}
-              className="rounded-lg border border-white/15 bg-ink-800 px-3 py-1.5 text-sm text-white outline-none focus:border-ember-500"
+              className="rounded-lg border border-line bg-elevated px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
             >
               {Array.from({ length: 9 }, (_, i) => i + 1).map((w) => (
                 <option key={w} value={w}>
@@ -58,7 +58,7 @@ export function Review({ store }: { store: Store }) {
               ))}
             </select>
             {week === currentWeek && (
-              <span className="rounded-full bg-ember-500/15 px-2 py-0.5 text-xs text-ember-400">current</span>
+              <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs text-accent">current</span>
             )}
           </div>
 
@@ -67,8 +67,8 @@ export function Review({ store }: { store: Store }) {
               p.type === 'score' ? (
                 <label key={p.key} className="block">
                   <div className="mb-1 flex justify-between text-sm">
-                    <span className="text-white/70">{p.label}</span>
-                    <span className="font-mono font-semibold text-ember-400">
+                    <span className="text-muted">{p.label}</span>
+                    <span className="font-mono font-semibold text-accent">
                       {(review[p.key as keyof WeeklyReview] as number) ?? 5}
                     </span>
                   </div>
@@ -78,31 +78,31 @@ export function Review({ store }: { store: Store }) {
                     max={10}
                     value={(review[p.key as keyof WeeklyReview] as number) ?? 5}
                     onChange={(e) => update({ [p.key]: Number(e.target.value) } as Partial<WeeklyReview>)}
-                    className="w-full accent-ember-500"
+                    className="w-full accent-accent"
                   />
                 </label>
               ) : (
                 <label key={p.key} className="block">
-                  <div className="mb-1 text-sm text-white/70">{p.label}</div>
+                  <div className="mb-1 text-sm text-muted">{p.label}</div>
                   <textarea
                     rows={2}
                     value={(review[p.key as keyof WeeklyReview] as string) ?? ''}
                     onChange={(e) => update({ [p.key]: e.target.value } as Partial<WeeklyReview>)}
-                    className="w-full resize-y rounded-lg border border-white/15 bg-ink-800 px-3 py-2 text-sm text-white outline-none focus:border-ember-500"
+                    className="w-full resize-y rounded-lg border border-line bg-elevated px-3 py-2 text-sm text-ink outline-none focus:border-accent"
                   />
                 </label>
               ),
             )}
           </div>
 
-          <div className="mt-5 rounded-xl border border-white/10 bg-ink-850 p-3">
-            <div className="text-xs text-white/45">Week {week} average score</div>
-            <div className="text-2xl font-bold text-ember-400">
+          <div className="mt-5 rounded-xl border border-line bg-elevated p-3">
+            <div className="text-xs text-faint">Week {week} average score</div>
+            <div className="text-2xl font-bold text-accent">
               {(
                 (review.bodyScore + review.tradingScore + review.careerScore + review.apartmentScore + review.contentScore) /
                 5
               ).toFixed(1)}
-              <span className="text-base text-white/30"> / 10</span>
+              <span className="text-base text-faint"> / 10</span>
             </div>
           </div>
         </Card>

@@ -13,11 +13,11 @@ import { Thesis } from './Career'
 
 const STATUS_COLOR: Record<ApartmentOption['status'], string> = {
   Researching: '#8a8a99',
-  'Viewing booked': '#5aa9ff',
-  Viewed: '#ffd24d',
-  Applied: '#3ddc84',
-  Backup: '#c78bff',
-  Passed: '#ff5a5a',
+  'Viewing booked': '#5b86c9',
+  Viewed: '#c0a24a',
+  Applied: '#5b9d78',
+  Backup: '#9a78c2',
+  Passed: '#cf6b6b',
 }
 
 export function Apartment({ store }: { store: Store }) {
@@ -41,17 +41,17 @@ export function Apartment({ store }: { store: Store }) {
 
   return (
     <div>
-      <Thesis text={APARTMENT_THESIS} accent="#c78bff" label="Apartment Thesis" />
+      <Thesis text={APARTMENT_THESIS} accent="#9a78c2" label="Apartment Thesis" />
 
       <Section title="Weekly Tasks" subtitle="A phased hunt — decide, view, verify, sign.">
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {WEEKLY_APARTMENT_TASKS.map((w) => (
             <Card key={w.week}>
-              <div className="mb-2 text-sm font-semibold text-white">{w.week}</div>
-              <ul className="space-y-1.5 text-sm text-white/65">
+              <div className="mb-2 text-sm font-semibold text-ink">{w.week}</div>
+              <ul className="space-y-1.5 text-sm text-muted">
                 {w.tasks.map((t) => (
                   <li key={t} className="flex gap-2">
-                    <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#c78bff]" />
+                    <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#9a78c2]" />
                     {t}
                   </li>
                 ))}
@@ -66,14 +66,14 @@ export function Apartment({ store }: { store: Store }) {
         <div className="mb-3">
           <button
             onClick={addOption}
-            className="rounded-xl border border-[#c78bff]/40 bg-[#c78bff]/10 px-4 py-2 text-sm font-medium text-[#c78bff] transition hover:bg-[#c78bff]/20"
+            className="rounded-xl border border-[#9a78c2]/40 bg-[#9a78c2]/10 px-4 py-2 text-sm font-medium text-[#9a78c2] transition hover:bg-[#9a78c2]/20"
           >
             + Add apartment
           </button>
         </div>
         {apartments.length === 0 ? (
           <Card>
-            <p className="text-sm text-white/40">No options yet. Add your first apartment to start tracking and scoring.</p>
+            <p className="text-sm text-faint">No options yet. Add your first apartment to start tracking and scoring.</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -87,33 +87,33 @@ export function Apartment({ store }: { store: Store }) {
                 </div>
                 <div className="mt-3 flex flex-wrap items-center gap-4">
                   <label className="flex items-center gap-2">
-                    <span className="text-xs text-white/50">Score</span>
+                    <span className="text-xs text-faint">Score</span>
                     <input
                       type="range"
                       min={1}
                       max={10}
                       value={a.score}
                       onChange={(e) => update(a.id, { score: Number(e.target.value) })}
-                      className="w-32 accent-[#c78bff]"
+                      className="w-32 accent-[#9a78c2]"
                     />
-                    <span className="w-6 font-mono text-sm font-semibold text-[#c78bff]">{a.score}</span>
+                    <span className="w-6 font-mono text-sm font-semibold text-[#9a78c2]">{a.score}</span>
                   </label>
                   <label className="flex items-center gap-2">
-                    <span className="text-xs text-white/50">Status</span>
+                    <span className="text-xs text-faint">Status</span>
                     <select
                       value={a.status}
                       onChange={(e) => update(a.id, { status: e.target.value as ApartmentOption['status'] })}
-                      className="rounded-lg border border-white/15 bg-ink-800 px-2 py-1 text-sm text-white outline-none"
+                      className="rounded-lg border border-line bg-elevated px-2 py-1 text-sm text-ink outline-none"
                       style={{ color: STATUS_COLOR[a.status] }}
                     >
                       {APARTMENT_STATUSES.map((s) => (
-                        <option key={s} value={s} className="text-white">
+                        <option key={s} value={s} className="text-ink">
                           {s}
                         </option>
                       ))}
                     </select>
                   </label>
-                  <button onClick={() => remove(a.id)} className="ml-auto text-xs text-white/30 hover:text-signal-red">
+                  <button onClick={() => remove(a.id)} className="ml-auto text-xs text-faint hover:text-signal-red">
                     Remove
                   </button>
                 </div>
@@ -131,8 +131,8 @@ export function Apartment({ store }: { store: Store }) {
           <Card>
             <ul className="space-y-2">
               {DOCUMENT_CHECKLIST.map((d) => (
-                <li key={d} className="flex items-start gap-2.5 text-sm text-white/75">
-                  <span className="mt-0.5 h-4 w-4 shrink-0 rounded border border-[#c78bff]/50" />
+                <li key={d} className="flex items-start gap-2.5 text-sm text-muted">
+                  <span className="mt-0.5 h-4 w-4 shrink-0 rounded border border-[#9a78c2]/50" />
                   {d}
                 </li>
               ))}
@@ -167,12 +167,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <div className="mb-1 text-xs text-white/50">{label}</div>
+      <div className="mb-1 text-xs text-faint">{label}</div>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-white/15 bg-ink-800 px-3 py-2 text-sm text-white outline-none focus:border-[#c78bff] placeholder:text-white/20"
+        className="w-full rounded-lg border border-line bg-elevated px-3 py-2 text-sm text-ink outline-none focus:border-[#9a78c2] placeholder:text-faint"
       />
     </label>
   )

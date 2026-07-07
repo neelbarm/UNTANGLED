@@ -6,18 +6,18 @@ export function Body() {
   return (
     <div>
       <Disclaimer>{BODY_DISCLAIMER}</Disclaimer>
-      <Thesis text={BODY_THESIS} accent="#3ddc84" label="Body Thesis" />
+      <Thesis text={BODY_THESIS} accent="#5b9d78" label="Body Thesis" />
 
       <Section title="The Habit System" subtitle="Six habits, repeated for 60 days. General and non-medical by design.">
         <div className="grid gap-3 md:grid-cols-2">
           {BODY_HABITS.map((h) => (
             <Card key={h.name}>
-              <div className="font-semibold text-white">{h.name}</div>
-              <p className="mt-1.5 text-sm text-white/70">
-                <span className="text-white/40">How:</span> {h.how}
+              <div className="font-semibold text-ink">{h.name}</div>
+              <p className="mt-1.5 text-sm text-muted">
+                <span className="text-faint">How:</span> {h.how}
               </p>
-              <p className="mt-1.5 text-sm text-white/60">
-                <span className="text-white/40">Why:</span> {h.why}
+              <p className="mt-1.5 text-sm text-muted">
+                <span className="text-faint">Why:</span> {h.why}
               </p>
             </Card>
           ))}
@@ -29,7 +29,7 @@ export function Body() {
           <Card>
             <ul className="space-y-2">
               {BODY_DAILY_TRACK.map((t) => (
-                <li key={t} className="flex items-center gap-2.5 text-sm text-white/75">
+                <li key={t} className="flex items-center gap-2.5 text-sm text-muted">
                   <span className="h-4 w-4 shrink-0 rounded border border-signal-green/50" />
                   {t}
                 </li>

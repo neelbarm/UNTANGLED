@@ -11,14 +11,14 @@ export function Schedule() {
         <div className="grid gap-3 md:grid-cols-2">
           {DAILY_FLOW.map((phase) => (
             <Card key={phase.phase}>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-ember-400">{phase.phase}</div>
+              <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">{phase.phase}</div>
               <ul className="space-y-1.5">
                 {phase.items.map((item) => (
                   <li key={item.id} className="flex items-center gap-2.5 rounded-md px-1 py-1">
-                    <span className="h-4 w-4 shrink-0 rounded border border-white/25" />
-                    <span className="flex-1 text-sm text-white/75">
+                    <span className="h-4 w-4 shrink-0 rounded border border-line" />
+                    <span className="flex-1 text-sm text-muted">
                       {item.label}
-                      {item.note && <span className="ml-1.5 text-[11px] text-white/35">· {item.note}</span>}
+                      {item.note && <span className="ml-1.5 text-[11px] text-faint">· {item.note}</span>}
                     </span>
                     <GoalTag goal={item.goal} small />
                   </li>

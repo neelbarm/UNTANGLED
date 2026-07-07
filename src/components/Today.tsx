@@ -4,7 +4,7 @@ import { DAILY_FLOW, DAY_CONTEXT } from '../data/dailyFlow'
 import { DAILY_CHECKLIST } from '../data/dailyChecklist'
 import { GOAL_META } from '../data/types'
 import type { Store } from '../store'
-import { GoalTag, ProgressBar, Section, Stat } from './ui'
+import { AnimatedCheck, GoalTag, MotionGroup, MotionItem, ProgressBar, Section, Stat } from './ui'
 
 export function Today({ store }: { store: Store }) {
   const { startDate, setStartDate, todayISO, getDay, toggleChecklist, toggleFlow, updateDay } = store
@@ -23,47 +23,47 @@ export function Today({ store }: { store: Store }) {
   return (
     <div>
       {/* Hero */}
-      <div className="mb-6 rounded-2xl border border-white/10 bg-gradient-to-br from-ink-850 to-ink-900 p-5">
+      <div className="mb-6 rounded-2xl border border-line bg-card p-5">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="text-xs font-medium uppercase tracking-widest text-ember-400">
+            <div className="text-xs font-medium uppercase tracking-widest text-accent">
               {notStarted ? 'Challenge not started' : `Week ${week} · ${theme.phase}`}
             </div>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-4xl font-black tracking-tight text-white">
+              <span className="text-4xl font-black tracking-tight text-ink">
                 {notStarted ? '—' : `Day ${day}`}
               </span>
-              <span className="text-lg text-white/40">/ {CHALLENGE_LENGTH}</span>
+              <span className="text-lg text-faint">/ {CHALLENGE_LENGTH}</span>
             </div>
-            <div className="mt-1 text-sm text-white/50">{prettyDate(todayISO)}</div>
+            <div className="mt-1 text-sm text-faint">{prettyDate(todayISO)}</div>
             {dayContext && (
-              <div className="mt-2 inline-flex rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs text-white/70">
+              <div className="mt-2 inline-flex rounded-full border border-line bg-elevated px-2.5 py-1 text-xs text-muted">
                 {dayContext}
               </div>
             )}
           </div>
-          <label className="text-xs text-white/50">
+          <label className="text-xs text-faint">
             <span className="mr-2">Start date</span>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value || todayISO)}
-              className="rounded-lg border border-white/15 bg-ink-800 px-2 py-1 text-white/80 outline-none focus:border-ember-500"
+              className="rounded-lg border border-line bg-elevated px-2 py-1 text-ink outline-none focus:border-accent"
             />
           </label>
         </div>
         <div className="mt-4">
-          <div className="mb-1.5 flex justify-between text-xs text-white/45">
+          <div className="mb-1.5 flex justify-between text-xs text-faint">
             <span>Progress</span>
             <span>{Math.round((Math.max(0, day) / CHALLENGE_LENGTH) * 100)}%</span>
           </div>
           <ProgressBar value={Math.max(0, day)} max={CHALLENGE_LENGTH} />
         </div>
         {!notStarted && (
-          <div className="mt-4 rounded-xl border border-white/10 bg-ink-900/60 p-3">
-            <div className="text-sm font-semibold text-white">This week: {theme.title}</div>
-            <div className="mt-1 text-sm text-white/60">{theme.focus}</div>
-            <div className="mt-2 flex items-center gap-2 text-xs text-ember-400">
+          <div className="mt-4 rounded-xl border border-line bg-card p-3">
+            <div className="text-sm font-semibold text-ink">This week: {theme.title}</div>
+            <div className="mt-1 text-sm text-muted">{theme.focus}</div>
+            <div className="mt-2 flex items-center gap-2 text-xs text-accent">
               <span aria-hidden>🎬</span>
               <span>Flagship Reel: {theme.filmThis}</span>
             </div>
@@ -76,42 +76,37 @@ export function Today({ store }: { store: Store }) {
         title={`Today's Flow — ${weekdayLong(todayISO)}`}
         subtitle={`Work through it and tick what you did · ${flowDone}/${flowItems.length} done`}
       >
-        <div className="mb-3">
-          <ProgressBar value={flowDone} max={flowItems.length} accent="#ff7a18" />
+        <div className="mb-4">
+          <ProgressBar value={flowDone} max={flowItems.length} />
         </div>
-        <div className="space-y-4">
+        <div className="space-y-5">
           {DAILY_FLOW.map((phase) => (
             <div key={phase.phase}>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-ember-400">{phase.phase}</div>
-              <div className="space-y-2">
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-faint">{phase.phase}</div>
+              <MotionGroup className="space-y-2">
                 {phase.items.map((item) => {
                   const on = !!rec.flow[item.id]
                   return (
-                    <button
-                      key={item.id}
-                      onClick={() => toggleFlow(todayISO, item.id)}
-                      className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition ${
-                        on ? 'border-ember-500/40 bg-ember-500/5' : 'border-white/10 bg-ink-900 hover:border-white/20'
-                      }`}
-                    >
-                      <span
-                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-xs ${
-                          on ? 'border-ember-500 bg-ember-500 text-ink-950' : 'border-white/25 text-transparent'
+                    <MotionItem key={item.id}>
+                      <button
+                        onClick={() => toggleFlow(todayISO, item.id)}
+                        className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors ${
+                          on ? 'border-accent bg-accent-soft' : 'border-line bg-card hover:border-line-strong'
                         }`}
                       >
-                        ✓
-                      </span>
-                      <span className="flex-1">
-                        <span className={`text-sm ${on ? 'text-white/50 line-through' : 'text-white/85'}`}>
-                          {item.label}
+                        <AnimatedCheck on={on} />
+                        <span className="flex-1">
+                          <span className={`text-sm ${on ? 'text-faint line-through' : 'text-ink'}`}>
+                            {item.label}
+                          </span>
+                          {item.note && <span className="ml-2 text-xs text-faint">· {item.note}</span>}
                         </span>
-                        {item.note && <span className="ml-2 text-xs text-white/35">· {item.note}</span>}
-                      </span>
-                      <GoalTag goal={item.goal} small />
-                    </button>
+                        <GoalTag goal={item.goal} />
+                      </button>
+                    </MotionItem>
                   )
                 })}
-              </div>
+              </MotionGroup>
             </div>
           ))}
         </div>
@@ -122,40 +117,37 @@ export function Today({ store }: { store: Store }) {
         title="Daily Non-Negotiables"
         subtitle={`The minimum bar for every challenge day · ${checkedCount}/${DAILY_CHECKLIST.length} done`}
       >
-        <div className="mb-3">
-          <ProgressBar value={checkedCount} max={DAILY_CHECKLIST.length} accent="#3ddc84" />
+        <div className="mb-4">
+          <ProgressBar value={checkedCount} max={DAILY_CHECKLIST.length} accent="#5b9d78" />
         </div>
-        <div className="grid gap-2 sm:grid-cols-2">
+        <MotionGroup className="grid gap-2 sm:grid-cols-2">
           {DAILY_CHECKLIST.map((item) => {
             const on = !!rec.checklist[item.id]
             return (
-              <button
-                key={item.id}
-                onClick={() => toggleChecklist(todayISO, item.id)}
-                className={`flex items-start gap-3 rounded-xl border p-3 text-left transition ${
-                  on ? 'border-signal-green/40 bg-signal-green/5' : 'border-white/10 bg-ink-900 hover:border-white/20'
-                }`}
-              >
-                <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-xs ${
-                    on ? 'border-signal-green bg-signal-green text-ink-950' : 'border-white/25 text-transparent'
+              <MotionItem key={item.id}>
+                <button
+                  onClick={() => toggleChecklist(todayISO, item.id)}
+                  className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors ${
+                    on ? 'border-signal-green/40 bg-signal-green/5' : 'border-line bg-card hover:border-line-strong'
                   }`}
                 >
-                  ✓
-                </span>
-                <span className="flex-1">
-                  <span className={`block text-sm ${on ? 'text-white/50 line-through' : 'text-white/85'}`}>
-                    {item.label}
+                  <span className="mt-0.5">
+                    <AnimatedCheck on={on} color="#5b9d78" />
                   </span>
-                  {item.detail && <span className="mt-0.5 block text-xs text-white/35">{item.detail}</span>}
-                </span>
-                <span className="mt-0.5">
-                  <GoalTag goal={item.goal} small />
-                </span>
-              </button>
+                  <span className="flex-1">
+                    <span className={`block text-sm ${on ? 'text-faint line-through' : 'text-ink'}`}>
+                      {item.label}
+                    </span>
+                    {item.detail && <span className="mt-0.5 block text-xs text-faint">{item.detail}</span>}
+                  </span>
+                  <span className="mt-0.5">
+                    <GoalTag goal={item.goal} />
+                  </span>
+                </button>
+              </MotionItem>
             )
           })}
-        </div>
+        </MotionGroup>
       </Section>
 
       {/* Daily trackers */}
@@ -184,10 +176,10 @@ export function Today({ store }: { store: Store }) {
           />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label="Flow done" value={`${flowDone}/${flowItems.length}`} accent="#ff9d4d" />
-          <Stat label="Non-negotiables" value={`${checkedCount}/${DAILY_CHECKLIST.length}`} accent="#3ddc84" />
-          <Stat label="Challenge day" value={notStarted ? '—' : String(day)} accent="#5aa9ff" />
-          <Stat label="Days left" value={String(CHALLENGE_LENGTH - Math.max(0, day))} accent="#c78bff" />
+          <Stat label="Flow done" value={`${flowDone}/${flowItems.length}`} accent="#c88a49" />
+          <Stat label="Non-negotiables" value={`${checkedCount}/${DAILY_CHECKLIST.length}`} accent="#5b9d78" />
+          <Stat label="Challenge day" value={notStarted ? '—' : String(day)} accent="#5b86c9" />
+          <Stat label="Days left" value={String(CHALLENGE_LENGTH - Math.max(0, day))} accent="#9a78c2" />
         </div>
       </Section>
     </div>
@@ -208,14 +200,14 @@ function TrackerInput({
   accent: string
 }) {
   return (
-    <label className="block rounded-xl border border-white/10 bg-ink-900 p-3">
-      <span className="text-xs text-white/45">{label}</span>
+    <label className="block rounded-xl border border-line bg-card p-3">
+      <span className="text-xs text-faint">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         inputMode="decimal"
-        className="mt-1 w-full bg-transparent text-lg font-semibold text-white outline-none placeholder:text-white/20"
+        className="mt-1 w-full bg-transparent text-lg font-semibold text-ink outline-none placeholder:text-faint"
         style={{ caretColor: accent }}
       />
     </label>

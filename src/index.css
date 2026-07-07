@@ -2,7 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------------------------------------------------------------------
+   Theme tokens. Light is the default (Notion-like); .dark on <html> flips them.
+   Components use semantic Tailwind colors (canvas/card/ink/muted/line/accent…)
+   that map to these variables, so both themes come from one set of classes.
+--------------------------------------------------------------------------- */
 :root {
+  --canvas: #ffffff;
+  --sidebar: #f7f7f5;
+  --card: #ffffff;
+  --elevated: #f4f4f2;
+  --line: #e8e7e3;
+  --line-strong: #dcdbd6;
+  --ink: #34322e;
+  --muted: #6b6a65;
+  --faint: #9a988f;
+  --accent: #c2620f;
+  --accent-soft: rgba(194, 98, 15, 0.1);
+  --hover: rgba(0, 0, 0, 0.04);
+  --shadow: 0 1px 2px rgba(15, 15, 15, 0.05), 0 4px 12px rgba(15, 15, 15, 0.04);
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: #191918;
+  --sidebar: #1c1c1b;
+  --card: #212120;
+  --elevated: #2a2a28;
+  --line: #302f2d;
+  --line-strong: #3b3a37;
+  --ink: #e7e6e2;
+  --muted: #a4a29b;
+  --faint: #74726b;
+  --accent: #f0942f;
+  --accent-soft: rgba(240, 148, 47, 0.12);
+  --hover: rgba(255, 255, 255, 0.05);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
   color-scheme: dark;
 }
 
@@ -14,40 +49,43 @@ body,
 
 body {
   margin: 0;
-  background: #0a0a0b;
-  color: #e7e7ea;
+  background: var(--canvas);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Thin, quiet scrollbars that match the dark shell. */
+/* Quiet, theme-aware scrollbars. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #33333d #101013;
+  scrollbar-color: var(--line-strong) transparent;
 }
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #33333d;
+  background: var(--line-strong);
   border-radius: 8px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* Utility: subtle top-to-bottom card sheen used across panels. */
-.panel {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 @media print {
   .no-print {
     display: none !important;
-  }
-  body {
-    background: #fff;
-    color: #000;
   }
 }

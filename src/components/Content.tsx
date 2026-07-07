@@ -18,9 +18,9 @@ export function Content() {
 
   return (
     <div>
-      <div className="mb-6 rounded-2xl border border-white/10 bg-gradient-to-br from-ink-850 to-ink-900 p-5">
-        <div className="text-xs font-semibold uppercase tracking-widest text-ember-400">The Account Promise</div>
-        <p className="mt-2 text-lg font-medium leading-snug text-white">{ACCOUNT_PROMISE}</p>
+      <div className="mb-6 rounded-2xl border border-line bg-card p-5">
+        <div className="text-xs font-semibold uppercase tracking-widest text-accent">The Account Promise</div>
+        <p className="mt-2 text-lg font-medium leading-snug text-ink">{ACCOUNT_PROMISE}</p>
       </div>
 
       <Section title="Content Pillars" subtitle="Five recurring buckets — every Reel belongs to one.">
@@ -28,13 +28,13 @@ export function Content() {
           {CONTENT_PILLARS.map((p) => (
             <Card key={p.name}>
               <div className="flex items-center justify-between">
-                <div className="font-semibold text-white">{p.name}</div>
+                <div className="font-semibold text-ink">{p.name}</div>
                 <GoalTag goal={p.goal} small />
               </div>
-              <p className="mt-1.5 text-sm text-white/60">{p.promise}</p>
+              <p className="mt-1.5 text-sm text-muted">{p.promise}</p>
               <ul className="mt-2 flex flex-wrap gap-1.5">
                 {p.examples.map((e) => (
-                  <li key={e} className="rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-white/50">
+                  <li key={e} className="rounded-full bg-elevated px-2 py-0.5 text-[11px] text-faint">
                     {e}
                   </li>
                 ))}
@@ -48,8 +48,8 @@ export function Content() {
         <div className="grid gap-3 md:grid-cols-2">
           {STORYLINES.map((s) => (
             <Card key={s.name}>
-              <div className="font-semibold text-white">{s.name}</div>
-              <p className="mt-1.5 text-sm leading-relaxed text-white/60">{s.arc}</p>
+              <div className="font-semibold text-ink">{s.name}</div>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">{s.arc}</p>
             </Card>
           ))}
         </div>
@@ -59,10 +59,10 @@ export function Content() {
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {SERIES.map((s) => (
             <Card key={s.name}>
-              <div className="font-semibold text-white">{s.name}</div>
-              <div className="mt-1 text-[11px] uppercase tracking-wider text-ember-400">{s.cadence}</div>
-              <p className="mt-1.5 text-sm text-white/60">{s.format}</p>
-              <p className="mt-2 text-xs text-white/40">Why: {s.why}</p>
+              <div className="font-semibold text-ink">{s.name}</div>
+              <div className="mt-1 text-[11px] uppercase tracking-wider text-accent">{s.cadence}</div>
+              <p className="mt-1.5 text-sm text-muted">{s.format}</p>
+              <p className="mt-2 text-xs text-faint">Why: {s.why}</p>
             </Card>
           ))}
         </div>
@@ -71,9 +71,9 @@ export function Content() {
       <div className="mb-8 grid gap-3 lg:grid-cols-2">
         <Section title="Hook Bank" subtitle="Open with tension. {N} = current day.">
           <Card>
-            <ul className="space-y-2 text-sm text-white/75">
+            <ul className="space-y-2 text-sm text-muted">
               {HOOKS.map((h, i) => (
-                <li key={i} className="rounded-lg border border-white/8 bg-ink-850 px-3 py-2">
+                <li key={i} className="rounded-lg border border-line bg-elevated px-3 py-2">
                   "{h}"
                 </li>
               ))}
@@ -117,23 +117,23 @@ export function Content() {
             <Card key={r.id}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-white/30">#{r.id}</span>
-                  <span className="font-semibold text-white">{r.title}</span>
+                  <span className="font-mono text-xs text-faint">#{r.id}</span>
+                  <span className="font-semibold text-ink">{r.title}</span>
                 </div>
                 <GoalTag goal={r.goal} small />
               </div>
               <div className="mt-2 space-y-1.5 text-sm">
-                <p className="text-white/80">
-                  <span className="text-ember-400">Hook:</span> "{r.hook}"
+                <p className="text-ink">
+                  <span className="text-accent">Hook:</span> "{r.hook}"
                 </p>
-                <p className="text-white/60">
-                  <span className="text-white/40">Film:</span> {r.film}
+                <p className="text-muted">
+                  <span className="text-faint">Film:</span> {r.film}
                 </p>
-                <p className="text-white/60">
-                  <span className="text-white/40">Caption:</span> {r.caption}
+                <p className="text-muted">
+                  <span className="text-faint">Caption:</span> {r.caption}
                 </p>
                 {r.series && (
-                  <p className="pt-1 text-[11px] text-white/40">Series: {r.series}</p>
+                  <p className="pt-1 text-[11px] text-faint">Series: {r.series}</p>
                 )}
               </div>
             </Card>
@@ -149,7 +149,7 @@ function FilterChip({
   active,
   onClick,
   count,
-  color = '#ff7a18',
+  color = '#c2620f',
 }: {
   label: string
   active: boolean
@@ -161,7 +161,7 @@ function FilterChip({
     <button
       onClick={onClick}
       className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-        active ? 'text-ink-950' : 'text-white/60 hover:text-white'
+        active ? 'text-canvas' : 'text-muted hover:text-ink'
       }`}
       style={{
         borderColor: active ? color : 'rgba(255,255,255,0.15)',

@@ -5,11 +5,11 @@ export type Goal = 'Body' | 'Trading' | 'Career' | 'Apartment' | 'Meta'
 export const GOALS: Goal[] = ['Body', 'Trading', 'Career', 'Apartment', 'Meta']
 
 export const GOAL_META: Record<Goal, { label: string; blurb: string; accent: string }> = {
-  Body: { label: 'Body', blurb: 'Lose 10 lbs through consistent habits', accent: '#3ddc84' },
-  Trading: { label: 'Trading', blurb: '$25k via process, discipline & risk control', accent: '#ff9d4d' },
-  Career: { label: 'Career', blurb: 'Land a VC / startup / AI role', accent: '#5aa9ff' },
-  Apartment: { label: 'Apartment', blurb: 'Move into an NYC apartment', accent: '#c78bff' },
-  Meta: { label: 'Brand', blurb: 'Build the public brand & the challenge itself', accent: '#ffd24d' },
+  Body: { label: 'Body', blurb: 'Lose 10 lbs through consistent habits', accent: '#5b9d78' },
+  Trading: { label: 'Trading', blurb: '$25k via process, discipline & risk control', accent: '#c88a49' },
+  Career: { label: 'Career', blurb: 'Land a VC / startup / AI role', accent: '#5b86c9' },
+  Apartment: { label: 'Apartment', blurb: 'Move into an NYC apartment', accent: '#9a78c2' },
+  Meta: { label: 'Brand', blurb: 'Build the public brand & the challenge itself', accent: '#c0a24a' },
 }
 
 export interface WeekTheme {

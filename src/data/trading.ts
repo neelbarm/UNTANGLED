@@ -45,6 +45,7 @@ export const MAX_RISK_RULES = [
   'No trading when tired, tilted, or rushed (e.g. squeezing one in before class).',
   'Respect every prop-firm rule as a hard constraint, not a suggestion.',
   'Green days don\'t unlock bigger risk. The rules don\'t change with the P&L.',
+  '7 evaluations, one plan: take the SAME setup on every account. Never over-risk one eval to "catch up" another.',
 ]
 
 // Fields for the interactive daily trading scorecard (persisted per day).

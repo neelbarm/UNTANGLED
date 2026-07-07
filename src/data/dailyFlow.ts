@@ -47,8 +47,9 @@ export const DAILY_FLOW: FlowPhase[] = [
 // The real fixed rhythm of the week, captured as anchors (no clock times).
 export const WEEKLY_ANCHORS: string[] = [
   'Gym + weigh-in every morning — same wake time all 60 days.',
-  'Trade the NY market open on market days — never after a class-day cutoff or when tilted.',
-  'Classes Tue / Wed / Fri — trade the open, cut it clean, then campus.',
+  'Trade the NY market open every market day — never when tilted or rushed.',
+  'Classes Mon + Wed (12–6) and Tue + Thu (8–5) — all end July 23. Trade the open first, film + build in the gaps.',
+  'Running 7 prop-firm evaluations at once — the SAME rules on every account; the risk cap is non-negotiable.',
   'Batch-film 2–3 Reels midweek (and Saturday) to stay ahead of busy days.',
   'Apartment viewings cluster on weekends when availability is best.',
   'Sunday is the reset — weekly review, plan the week, prep meals + 7 hooks.',
@@ -56,12 +57,13 @@ export const WEEKLY_ANCHORS: string[] = [
 
 // A light per-weekday context note shown on the Today hero — realism without
 // dictating times. Keyed by lowercase short weekday ('mon', 'tue', ...).
+// (Class notes apply through July 23; after that these become full build days.)
 export const DAY_CONTEXT: Record<string, string> = {
-  mon: 'Build day — set the week: trade, build, outreach.',
-  tue: 'Class day — trade the open, then campus.',
-  wed: 'Class day — midweek discipline check + batch-film.',
-  thu: 'Build day — full build + trade, push output.',
-  fri: 'Class day — close the trading week clean.',
+  mon: 'Class day — class 12–6. Trade the open first, build + film in the gaps.',
+  tue: 'Class day — class 8–5, but you can still trade the open + film.',
+  wed: 'Class day — class 12–6. Trade the open first, build + film in the gaps.',
+  thu: 'Class day — class 8–5, but you can still trade the open + film.',
+  fri: 'Build day — no class. Full build + trade, push output.',
   sat: 'Long-game day — viewings, deep build, batch content.',
   sun: 'Reset day — weekly review and plan the win.',
 }

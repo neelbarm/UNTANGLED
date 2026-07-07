@@ -24,7 +24,7 @@ export function Trading({ store }: { store: Store }) {
   return (
     <div>
       <Disclaimer>{TRADING_DISCLAIMER}</Disclaimer>
-      <Thesis text={TRADING_THESIS} accent="#ff9d4d" label="Trading Thesis" />
+      <Thesis text={TRADING_THESIS} accent="#c88a49" label="Trading Thesis" />
 
       <div className="grid gap-3 lg:grid-cols-2">
         <Section title="Pre-Market Checklist" subtitle="No position until every box is checked.">
@@ -47,9 +47,9 @@ export function Trading({ store }: { store: Store }) {
         </Section>
         <Section title="Emotional-Control Prompts" subtitle="Ask before you click.">
           <Card>
-            <ul className="space-y-2 text-sm text-white/75">
+            <ul className="space-y-2 text-sm text-muted">
               {EMOTIONAL_PROMPTS.map((p, i) => (
-                <li key={i} className="rounded-lg border border-white/8 bg-ink-850 px-3 py-2 italic">
+                <li key={i} className="rounded-lg border border-line bg-elevated px-3 py-2 italic">
                   "{p}"
                 </li>
               ))}
@@ -99,8 +99,8 @@ function ScoreSlider({ label, value, onChange }: { label: string; value: number;
   return (
     <label className="block">
       <div className="mb-1 flex justify-between text-sm">
-        <span className="text-white/70">{label}</span>
-        <span className="font-mono font-semibold text-ember-400">{value}</span>
+        <span className="text-muted">{label}</span>
+        <span className="font-mono font-semibold text-accent">{value}</span>
       </div>
       <input
         type="range"
@@ -108,7 +108,7 @@ function ScoreSlider({ label, value, onChange }: { label: string; value: number;
         max={10}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-ember-500"
+        className="w-full accent-accent"
       />
     </label>
   )
@@ -117,13 +117,13 @@ function ScoreSlider({ label, value, onChange }: { label: string; value: number;
 function NumberField({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   return (
     <label className="block">
-      <div className="mb-1 text-sm text-white/70">{label}</div>
+      <div className="mb-1 text-sm text-muted">{label}</div>
       <input
         type="number"
         min={0}
         value={value}
         onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
-        className="w-24 rounded-lg border border-white/15 bg-ink-800 px-3 py-1.5 text-white outline-none focus:border-ember-500"
+        className="w-24 rounded-lg border border-line bg-elevated px-3 py-1.5 text-ink outline-none focus:border-accent"
       />
     </label>
   )
@@ -132,11 +132,11 @@ function NumberField({ label, value, onChange }: { label: string; value: number;
 function TextField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <label className="block">
-      <div className="mb-1 text-xs text-white/50">{label}</div>
+      <div className="mb-1 text-xs text-faint">{label}</div>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-white/15 bg-ink-800 px-3 py-2 text-sm text-white outline-none focus:border-ember-500"
+        className="w-full rounded-lg border border-line bg-elevated px-3 py-2 text-sm text-ink outline-none focus:border-accent"
       />
     </label>
   )
@@ -147,7 +147,7 @@ function Toggle({ label, value, onChange }: { label: string; value: boolean; onC
     <button
       onClick={() => onChange(!value)}
       className={`rounded-xl border px-3 py-2 text-sm font-medium transition ${
-        value ? 'border-signal-green/50 bg-signal-green/10 text-signal-green' : 'border-white/15 bg-ink-800 text-white/50'
+        value ? 'border-signal-green/50 bg-signal-green/10 text-signal-green' : 'border-line bg-elevated text-faint'
       }`}
     >
       {value ? '✓ ' : '○ '}

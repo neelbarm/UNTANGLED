@@ -11,18 +11,18 @@ import { Bullets, Card, Section } from './ui'
 export function Career() {
   return (
     <div>
-      <Thesis text={CAREER_THESIS} accent="#5aa9ff" label="Career Thesis" />
+      <Thesis text={CAREER_THESIS} accent="#5b86c9" label="Career Thesis" />
 
       <Section title="Outreach Targets" subtitle="Who to reach — and the angle that actually lands.">
         <div className="grid gap-3 md:grid-cols-2">
           {OUTREACH_TARGETS.map((t) => (
             <Card key={t.group}>
-              <div className="font-semibold text-white">{t.group}</div>
-              <p className="mt-1.5 text-sm text-white/70">
-                <span className="text-white/40">Who:</span> {t.who}
+              <div className="font-semibold text-ink">{t.group}</div>
+              <p className="mt-1.5 text-sm text-muted">
+                <span className="text-faint">Who:</span> {t.who}
               </p>
-              <p className="mt-1.5 text-sm text-white/70">
-                <span className="text-white/40">Angle:</span> {t.angle}
+              <p className="mt-1.5 text-sm text-muted">
+                <span className="text-faint">Angle:</span> {t.angle}
               </p>
             </Card>
           ))}
@@ -33,10 +33,10 @@ export function Career() {
         <Card>
           <div className="space-y-2">
             {WEEKLY_APPLICATION_GOALS.map((g) => (
-              <div key={g.metric} className="flex flex-wrap items-baseline justify-between gap-2 border-b border-white/5 pb-2 last:border-0">
+              <div key={g.metric} className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2 last:border-0">
                 <div>
-                  <span className="text-sm font-medium text-white">{g.metric}</span>
-                  <span className="ml-2 text-xs text-white/40">{g.note}</span>
+                  <span className="text-sm font-medium text-ink">{g.metric}</span>
+                  <span className="ml-2 text-xs text-faint">{g.note}</span>
                 </div>
                 <span className="rounded-full bg-signal-blue/15 px-2.5 py-0.5 text-xs font-semibold text-signal-blue">
                   {g.target}
@@ -75,7 +75,7 @@ export function Thesis({ text, accent, label }: { text: string; accent: string; 
       <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>
         {label}
       </div>
-      <p className="mt-2 text-base font-medium leading-snug text-white">{text}</p>
+      <p className="mt-2 text-base font-medium leading-snug text-ink">{text}</p>
     </div>
   )
 }
