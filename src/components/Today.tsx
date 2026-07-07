@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { CHALLENGE_LENGTH, challengeDay, prettyDate, weekdayLong, weekOfDay } from '../lib/dates'
 import { WEEK_THEMES } from '../data/masterPlan'
 import { DAILY_FLOW, DAY_CONTEXT } from '../data/dailyFlow'
@@ -22,54 +23,57 @@ export function Today({ store }: { store: Store }) {
 
   return (
     <div>
-      {/* Hero */}
-      <div className="mb-6 rounded-2xl border border-line bg-card p-5">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <div className="text-xs font-medium uppercase tracking-widest text-accent">
-              {notStarted ? 'Challenge not started' : `Week ${week} · ${theme.phase}`}
-            </div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-4xl font-black tracking-tight text-ink">
-                {notStarted ? '—' : `Day ${day}`}
-              </span>
-              <span className="text-lg text-faint">/ {CHALLENGE_LENGTH}</span>
-            </div>
-            <div className="mt-1 text-sm text-faint">{prettyDate(todayISO)}</div>
-            {dayContext && (
-              <div className="mt-2 inline-flex rounded-full border border-line bg-elevated px-2.5 py-1 text-xs text-muted">
-                {dayContext}
-              </div>
-            )}
-          </div>
-          <label className="text-xs text-faint">
-            <span className="mr-2">Start date</span>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value || todayISO)}
-              className="rounded-lg border border-line bg-elevated px-2 py-1 text-ink outline-none focus:border-accent"
-            />
-          </label>
+      {/* Cinematic hero */}
+      <motion.div
+        className="mb-14 pt-4 text-center sm:pt-8"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="text-[13px] font-semibold uppercase tracking-[0.25em] text-accent">
+          {notStarted ? 'Challenge not started' : `Week ${week} · ${theme.phase}`}
         </div>
-        <div className="mt-4">
-          <div className="mb-1.5 flex justify-between text-xs text-faint">
+        <div className="mt-3 flex items-end justify-center gap-3">
+          <span className="grad-text text-7xl font-semibold leading-none tracking-tighter sm:text-8xl">
+            {notStarted ? '—' : `Day ${day}`}
+          </span>
+          <span className="pb-2 text-2xl font-medium text-faint sm:text-3xl">/ {CHALLENGE_LENGTH}</span>
+        </div>
+        <div className="mt-4 text-[15px] text-muted">{prettyDate(todayISO)}</div>
+        {dayContext && (
+          <div className="mt-4 inline-flex rounded-full border border-line bg-card px-4 py-1.5 text-[13px] text-muted backdrop-blur-xl">
+            {dayContext}
+          </div>
+        )}
+
+        <div className="mx-auto mt-8 max-w-lg">
+          <div className="mb-2 flex justify-between text-xs text-faint">
             <span>Progress</span>
             <span>{Math.round((Math.max(0, day) / CHALLENGE_LENGTH) * 100)}%</span>
           </div>
           <ProgressBar value={Math.max(0, day)} max={CHALLENGE_LENGTH} />
+          <label className="mt-4 inline-flex items-center gap-2 text-xs text-faint">
+            <span>Start date</span>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value || todayISO)}
+              className="rounded-lg border border-line bg-card px-2.5 py-1 text-ink outline-none backdrop-blur-xl focus:border-accent"
+            />
+          </label>
         </div>
+
         {!notStarted && (
-          <div className="mt-4 rounded-xl border border-line bg-card p-3">
-            <div className="text-sm font-semibold text-ink">This week: {theme.title}</div>
-            <div className="mt-1 text-sm text-muted">{theme.focus}</div>
-            <div className="mt-2 flex items-center gap-2 text-xs text-accent">
+          <div className="mx-auto mt-8 max-w-xl rounded-3xl border border-line bg-card p-5 text-left backdrop-blur-xl">
+            <div className="text-[15px] font-semibold text-ink">This week — {theme.title}</div>
+            <div className="mt-1.5 text-[14px] leading-relaxed text-muted">{theme.focus}</div>
+            <div className="mt-3 flex items-center gap-2 text-[13px] text-accent">
               <span aria-hidden>🎬</span>
               <span>Flagship Reel: {theme.filmThis}</span>
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Today's flow — check off what you did, in order, no clock times */}
       <Section

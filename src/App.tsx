@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useStore } from './store'
 import { useTheme } from './hooks/useTheme'
-import { tabTransition } from './lib/motion'
 import { Today } from './components/Today'
 import { Plan } from './components/Plan'
 import { Schedule } from './components/Schedule'
@@ -15,16 +14,16 @@ import { Review } from './components/Review'
 import { Reference } from './components/Reference'
 
 const TABS = [
-  { key: 'today', label: 'Today', emoji: '◇' },
-  { key: 'plan', label: 'Plan', emoji: '◈' },
-  { key: 'schedule', label: 'Flow', emoji: '❯' },
-  { key: 'content', label: 'Content', emoji: '✳' },
-  { key: 'career', label: 'Career', emoji: '◆' },
-  { key: 'apartment', label: 'Apartment', emoji: '⌂' },
-  { key: 'body', label: 'Body', emoji: '❤' },
-  { key: 'trading', label: 'Trading', emoji: '↗' },
-  { key: 'review', label: 'Review', emoji: '↺' },
-  { key: 'reference', label: 'Reference', emoji: '✎' },
+  { key: 'today', label: 'Today' },
+  { key: 'plan', label: 'Plan' },
+  { key: 'schedule', label: 'Flow' },
+  { key: 'content', label: 'Content' },
+  { key: 'career', label: 'Career' },
+  { key: 'apartment', label: 'Apartment' },
+  { key: 'body', label: 'Body' },
+  { key: 'trading', label: 'Trading' },
+  { key: 'review', label: 'Review' },
+  { key: 'reference', label: 'Reference' },
 ] as const
 
 type TabKey = (typeof TABS)[number]['key']
@@ -33,144 +32,92 @@ export default function App() {
   const store = useStore()
   const [theme, toggleTheme] = useTheme()
   const [tab, setTab] = useState<TabKey>('today')
-  const [drawerOpen, setDrawerOpen] = useState(false)
-
-  const select = (k: TabKey) => {
-    setTab(k)
-    setDrawerOpen(false)
-  }
-
-  const nav = (
-    <nav className="flex flex-col gap-0.5">
-      {TABS.map((t) => {
-        const active = tab === t.key
-        return (
-          <button
-            key={t.key}
-            onClick={() => select(t.key)}
-            className={`relative flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-              active ? 'text-ink' : 'text-muted hover:bg-hover hover:text-ink'
-            }`}
-          >
-            {active && (
-              <motion.span
-                layoutId="nav-active"
-                className="absolute inset-0 rounded-lg bg-elevated"
-                transition={{ type: 'spring', stiffness: 500, damping: 40 }}
-              />
-            )}
-            <span aria-hidden className="relative z-10 w-4 text-center text-[13px] text-faint">{t.emoji}</span>
-            <span className="relative z-10 font-medium">{t.label}</span>
-          </button>
-        )
-      })}
-    </nav>
-  )
-
-  const brand = (
-    <div className="flex items-center gap-2.5">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-sm font-black text-canvas">
-        60
-      </div>
-      <div className="leading-tight">
-        <div className="text-sm font-semibold text-ink">Neel Barmecha</div>
-        <div className="text-[11px] text-faint">60-Day Operating System</div>
-      </div>
-    </div>
-  )
-
-  const themeButton = (
-    <button
-      onClick={toggleTheme}
-      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-hover hover:text-ink"
-      aria-label="Toggle theme"
-    >
-      <span className="w-4 text-center">{theme === 'dark' ? '☾' : '☀'}</span>
-      <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
-    </button>
-  )
 
   return (
-    <div className="flex min-h-full bg-canvas">
-      {/* Desktop sidebar */}
-      <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-line bg-sidebar px-3 py-4 lg:flex">
-        <div className="px-2 pb-5">{brand}</div>
-        <div className="flex-1 overflow-y-auto">{nav}</div>
-        <div className="mt-3 border-t border-line pt-3">{themeButton}</div>
-      </aside>
+    <div className="relative min-h-full overflow-x-hidden">
+      {/* Animated aurora backdrop */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div
+          className="aurora absolute -left-[10%] -top-[15%] h-[55vh] w-[55vh] rounded-full opacity-40 blur-[120px]"
+          style={{ background: 'radial-gradient(circle, var(--accent), transparent 65%)' }}
+        />
+        <div
+          className="aurora absolute -right-[10%] top-[20%] h-[50vh] w-[50vh] rounded-full opacity-30 blur-[120px]"
+          style={{ background: 'radial-gradient(circle, var(--accent-2), transparent 65%)', animationDelay: '-9s' }}
+        />
+      </div>
 
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {drawerOpen && (
-          <>
-            <motion.div
-              className="no-print fixed inset-0 z-30 bg-black/40 lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setDrawerOpen(false)}
-            />
-            <motion.aside
-              className="no-print fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-line bg-sidebar px-3 py-4 lg:hidden"
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-            >
-              <div className="px-2 pb-5">{brand}</div>
-              <div className="flex-1 overflow-y-auto">{nav}</div>
-              <div className="mt-3 border-t border-line pt-3">{themeButton}</div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Main column */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* Mobile top bar */}
-        <header className="no-print sticky top-0 z-20 flex items-center justify-between border-b border-line bg-canvas/85 px-4 py-3 backdrop-blur lg:hidden">
-          <button
-            onClick={() => setDrawerOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted hover:bg-hover"
-            aria-label="Open menu"
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            </svg>
+      {/* Frosted top nav */}
+      <header className="no-print sticky top-0 z-50 border-b border-line bg-glass backdrop-blur-2xl">
+        <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
+          <button onClick={() => setTab('today')} className="flex shrink-0 items-center gap-2.5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg text-[13px] font-black text-white" style={{ backgroundImage: 'linear-gradient(135deg, var(--accent), var(--accent-2))' }}>
+              60
+            </span>
+            <span className="hidden text-[15px] font-semibold tracking-tight text-ink sm:block">Neel Barmecha</span>
           </button>
-          {brand}
-          <button onClick={toggleTheme} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted hover:bg-hover" aria-label="Toggle theme">
+
+          <nav className="no-scrollbar flex flex-1 items-center gap-1 overflow-x-auto">
+            {TABS.map((t) => {
+              const active = tab === t.key
+              return (
+                <button
+                  key={t.key}
+                  onClick={() => setTab(t.key)}
+                  className={`relative shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
+                    active ? 'text-ink' : 'text-muted hover:text-ink'
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-0 rounded-full bg-elevated"
+                      transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+                    />
+                  )}
+                  <span className="relative z-10">{t.label}</span>
+                </button>
+              )
+            })}
+          </nav>
+
+          <button
+            onClick={toggleTheme}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors hover:text-ink"
+            aria-label="Toggle theme"
+          >
             {theme === 'dark' ? '☾' : '☀'}
           </button>
-        </header>
+        </div>
+      </header>
 
-        <main className="mx-auto w-full max-w-3xl flex-1 px-5 py-8 sm:px-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={tab}
-              variants={tabTransition}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {tab === 'today' && <Today store={store} />}
-              {tab === 'plan' && <Plan />}
-              {tab === 'schedule' && <Schedule />}
-              {tab === 'content' && <Content />}
-              {tab === 'career' && <Career />}
-              {tab === 'apartment' && <Apartment store={store} />}
-              {tab === 'body' && <Body />}
-              {tab === 'trading' && <Trading store={store} />}
-              {tab === 'review' && <Review store={store} />}
-              {tab === 'reference' && <Reference />}
-            </motion.div>
-          </AnimatePresence>
+      {/* Content */}
+      <main className="mx-auto w-full max-w-4xl px-5 pb-24 pt-10 sm:px-8 sm:pt-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tab}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {tab === 'today' && <Today store={store} />}
+            {tab === 'plan' && <Plan />}
+            {tab === 'schedule' && <Schedule />}
+            {tab === 'content' && <Content />}
+            {tab === 'career' && <Career />}
+            {tab === 'apartment' && <Apartment store={store} />}
+            {tab === 'body' && <Body />}
+            {tab === 'trading' && <Trading store={store} />}
+            {tab === 'review' && <Review store={store} />}
+            {tab === 'reference' && <Reference />}
+          </motion.div>
+        </AnimatePresence>
 
-          <footer className="mt-12 border-t border-line pt-6 text-center text-xs text-faint">
-            Built for visible life change in public · 60 days · 4 goals · Not medical or financial advice.
-          </footer>
-        </main>
-      </div>
+        <footer className="mt-16 border-t border-line pt-8 text-center text-[13px] text-faint">
+          Built for visible life change in public · 60 days · 4 goals · Not medical or financial advice.
+        </footer>
+      </main>
     </div>
   )
 }

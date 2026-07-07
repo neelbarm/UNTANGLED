@@ -3,41 +3,48 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------------------------------
-   Theme tokens. Light is the default (Notion-like); .dark on <html> flips them.
-   Components use semantic Tailwind colors (canvas/card/ink/muted/line/accent…)
-   that map to these variables, so both themes come from one set of classes.
+   Apple-inspired theme tokens. Dark is the default (cinematic, premium).
+   Components use semantic Tailwind colors mapped to these variables.
 --------------------------------------------------------------------------- */
 :root {
-  --canvas: #ffffff;
-  --sidebar: #f7f7f5;
-  --card: #ffffff;
-  --elevated: #f4f4f2;
-  --line: #e8e7e3;
-  --line-strong: #dcdbd6;
-  --ink: #34322e;
-  --muted: #6b6a65;
-  --faint: #9a988f;
-  --accent: #c2620f;
-  --accent-soft: rgba(194, 98, 15, 0.1);
+  /* Light (clean, Apple-light) */
+  --canvas: #fbfbfd;
+  --sidebar: #ffffff;
+  --card: rgba(255, 255, 255, 0.72);
+  --elevated: #f5f5f7;
+  --line: rgba(0, 0, 0, 0.1);
+  --line-strong: rgba(0, 0, 0, 0.16);
+  --ink: #1d1d1f;
+  --muted: #6e6e73;
+  --faint: #86868b;
+  --accent: #0071e3;
+  --accent-2: #a24bff;
+  --accent-soft: rgba(0, 113, 227, 0.1);
   --hover: rgba(0, 0, 0, 0.04);
-  --shadow: 0 1px 2px rgba(15, 15, 15, 0.05), 0 4px 12px rgba(15, 15, 15, 0.04);
+  --glass: rgba(255, 255, 255, 0.6);
+  --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  --glow: 0 0 0 rgba(0, 0, 0, 0);
   color-scheme: light;
 }
 
 .dark {
-  --canvas: #191918;
-  --sidebar: #1c1c1b;
-  --card: #212120;
-  --elevated: #2a2a28;
-  --line: #302f2d;
-  --line-strong: #3b3a37;
-  --ink: #e7e6e2;
-  --muted: #a4a29b;
-  --faint: #74726b;
-  --accent: #f0942f;
-  --accent-soft: rgba(240, 148, 47, 0.12);
-  --hover: rgba(255, 255, 255, 0.05);
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
+  /* Dark (cinematic black, vibrant accents) */
+  --canvas: #000000;
+  --sidebar: rgba(20, 20, 22, 0.7);
+  --card: rgba(255, 255, 255, 0.045);
+  --elevated: rgba(255, 255, 255, 0.08);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --ink: #f5f5f7;
+  --muted: #a1a1a6;
+  --faint: #6e6e73;
+  --accent: #2997ff;
+  --accent-2: #bf5af2;
+  --accent-soft: rgba(41, 151, 255, 0.14);
+  --hover: rgba(255, 255, 255, 0.06);
+  --glass: rgba(20, 20, 22, 0.6);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --glow: 0 0 40px rgba(41, 151, 255, 0.15);
   color-scheme: dark;
 }
 
@@ -51,9 +58,29 @@ body {
   margin: 0;
   background: var(--canvas);
   color: var(--ink);
+  font-feature-settings: 'kern', 'liga';
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Gradient text helper — Apple-style shimmer headlines. */
+.grad-text {
+  background-image: linear-gradient(120deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Slowly drifting aurora used behind the hero / page. */
+@keyframes drift {
+  0% { transform: translate3d(-6%, -4%, 0) scale(1); }
+  50% { transform: translate3d(6%, 4%, 0) scale(1.15); }
+  100% { transform: translate3d(-6%, -4%, 0) scale(1); }
+}
+.aurora {
+  animation: drift 18s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* Quiet, theme-aware scrollbars. */
@@ -61,23 +88,15 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--line-strong) transparent;
 }
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-*::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
-  border-radius: 8px;
-}
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+/* Hide scrollbar on the nav rail. */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Respect users who prefer less motion. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -85,7 +104,5 @@ body {
 }
 
 @media print {
-  .no-print {
-    display: none !important;
-  }
+  .no-print { display: none !important; }
 }

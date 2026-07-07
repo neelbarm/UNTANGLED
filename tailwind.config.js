@@ -16,7 +16,9 @@ export default {
         muted: 'var(--muted)',
         faint: 'var(--faint)',
         accent: 'var(--accent)',
+        'accent-2': 'var(--accent-2)',
         'accent-soft': 'var(--accent-soft)',
+        glass: 'var(--glass)',
         hover: 'var(--hover)',
         // Muted, calmer goal hues (used as small dots + status accents).
         goal: {
@@ -34,9 +36,13 @@ export default {
       },
       boxShadow: {
         soft: 'var(--shadow)',
+        glow: 'var(--glow)',
+      },
+      borderRadius: {
+        '4xl': '2rem',
       },
       fontFamily: {
-        sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
     },

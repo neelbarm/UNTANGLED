@@ -3,9 +3,9 @@ import { useLocalStorage } from './useLocalStorage'
 
 export type Theme = 'light' | 'dark'
 
-/** Theme state persisted in localStorage. Defaults to light (Notion-like). */
+/** Theme state persisted in localStorage. Defaults to dark (cinematic). */
 export function useTheme(): [Theme, () => void] {
-  const [theme, setTheme] = useLocalStorage<Theme>('sixty:theme', 'light')
+  const [theme, setTheme] = useLocalStorage<Theme>('sixty:theme', 'dark')
 
   useEffect(() => {
     const root = document.documentElement
