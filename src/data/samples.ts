@@ -2,18 +2,18 @@
 // and a Notion dashboard structure. Rendered read-only in the Reference tab.
 
 export const DAY_ONE_SCRIPT = {
-  title: 'Day 1 of 60 — The Manifesto Reel',
+  title: 'Day 1 of 80 — The Manifesto Reel',
   runtime: '~30–40 seconds',
-  format: 'You to camera, high energy but controlled. Big on-screen text: "DAY 1 / 60".',
+  format: 'You to camera, high energy but controlled. Big on-screen text: "DAY 1 / 80".',
   beats: [
-    { t: '0:00', direction: 'Cold open, direct eye contact, no intro.', line: '"Day one of sixty. I\'m doing four things most people wouldn\'t attempt at once — on camera, in public, starting right now."' },
+    { t: '0:00', direction: 'Cold open, direct eye contact, no intro.', line: '"Day one of eighty. I\'m doing four things most people wouldn\'t attempt at once — on camera, in public, starting right now."' },
     { t: '0:06', direction: 'Cut to quick b-roll of each as you name it (gym, charts, laptop, NYC skyline).', line: '"Lose ten pounds. Learn to trade with real discipline through prop firms. Break into venture and AI. And move to New York City."' },
     { t: '0:16', direction: 'Back to camera, lean in, slower.', line: '"No hype. No get-rich-quick. Just a system — habits, checklists, and a scoreboard you\'ll see every single week."' },
     { t: '0:24', direction: 'Hold up phone showing the dashboard / Notion.', line: '"This is the operating system I built to run all four at once, using AI as leverage. I\'ll show you the whole thing."' },
-    { t: '0:31', direction: 'Final line, dead serious, then cut to black on the countdown.', line: '"Sixty days. Four goals. Follow the scoreboard — and hold me to it. Day one starts now."' },
+    { t: '0:31', direction: 'Final line, dead serious, then cut to black on the countdown.', line: '"Eighty days. Four goals. Follow the scoreboard — and hold me to it. Day one starts now."' },
   ],
   caption:
-    'Day 1 of 60. Four goals, in public, no hype: lose 10 lbs, trade with discipline, break into VC/AI, move to NYC. I\'ll post the scoreboard every week. Follow so you can hold me to it. 👇 Which goal do you want to see first?',
+    'Day 1 of 80. Four goals, in public, no hype: lose 10 lbs, trade with discipline, break into VC/AI, move to NYC. I\'ll post the scoreboard every week. Follow so you can hold me to it. 👇 Which goal do you want to see first?',
   postingNotes: [
     'Pin this as the "start here" Reel so new followers can binge the arc.',
     'Keep the countdown graphic consistent — it becomes the account\'s signature.',
@@ -41,9 +41,9 @@ export const NOTION_DASHBOARD = {
     'A simple Notion structure that mirrors this app — one command center page with linked databases. Copy this layout to run the challenge outside the app or as your backup source of truth.',
   topLevel: [
     {
-      name: '🎯 60-Day Command Center (home page)',
+      name: '🎯 80-Day Command Center (home page)',
       children: [
-        'Countdown callout: "Day X / 60" + start date',
+        'Countdown callout: "Day X / 80" + start date',
         'This week\'s theme + top priority',
         'Four goal-progress bars (linked rollups)',
         'Quick links to every database below',

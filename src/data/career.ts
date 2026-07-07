@@ -49,7 +49,7 @@ export const PROOF_OF_WORK = [
   'Write public teardowns of startups/products: what\'s smart, what you\'d change, what you\'d build next.',
   'Publish a "building in public" log of your gen-AI learning — code, experiments, and takeaways.',
   'Turn a company\'s real problem into an unsolicited prototype or memo, then send it to them.',
-  'Package this 60-day challenge itself as a case study in execution, systems, and using AI as leverage.',
+  'Package this 80-day challenge itself as a case study in execution, systems, and using AI as leverage.',
   'Contribute usefully in AI/startup communities — answers, tools, and demos that get noticed.',
 ]
 
@@ -57,7 +57,7 @@ export const WHAT_TO_POST_TO_LOOK_HIREABLE = [
   'Proof you ship: demos, screen-records, "built this before 9am" clips.',
   'Proof you think: teardowns, sharp takes on AI/startups, what you\'d do differently.',
   'Proof you learn fast: teaching a gen-AI concept you just understood.',
-  'Proof you\'re disciplined: the 60-day system, showing up daily, the scoreboard.',
+  'Proof you\'re disciplined: the 80-day system, showing up daily, the scoreboard.',
   'Proof you add value to others: helping founders/builders publicly, no ask attached.',
   'Avoid: vague "open to work" posts with no evidence. Show the work, and let the work ask for you.',
 ]

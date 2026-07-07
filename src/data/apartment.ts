@@ -7,10 +7,10 @@ export const APARTMENT_THESIS =
 
 export const WEEKLY_APARTMENT_TASKS = [
   { week: 'Weeks 1–2', tasks: ['Lock budget + total move-in cost ceiling', 'Pick 3 candidate neighborhoods', 'List non-negotiables vs. nice-to-haves', 'Assemble the document folder'] },
-  { week: 'Weeks 3–4', tasks: ['Book 3–5 viewings/week', 'Score every place the same way', 'Test the real commute for top options', 'Narrow to 1–2 neighborhoods'] },
-  { week: 'Weeks 5–6', tasks: ['Second-round viewings on finalists', 'Verify lease terms + total cost in writing', 'Get paperwork pre-verified so you can sign fast', 'Set your walk-away price'] },
-  { week: 'Weeks 7–8', tasks: ['Submit application on the top choice', 'Keep a backup ready in case it falls through', 'Negotiate where possible', 'Sign the lease + book moving logistics'] },
-  { week: 'Week 9', tasks: ['Move in', 'Film the first-night arc', 'Close the apartment goal on camera'] },
+  { week: 'Weeks 3–5', tasks: ['Book 3–5 viewings/week', 'Score every place the same way', 'Test the real commute for top options', 'Narrow to 1–2 neighborhoods'] },
+  { week: 'Weeks 6–8', tasks: ['Second-round viewings on finalists', 'Verify lease terms + total cost in writing', 'Get paperwork pre-verified so you can sign fast', 'Set your walk-away price'] },
+  { week: 'Weeks 9–10', tasks: ['Submit application on the top choice', 'Keep a backup ready in case it falls through', 'Negotiate where possible', 'Sign the lease + book moving logistics'] },
+  { week: 'Weeks 11–12', tasks: ['Schedule the move + pack', 'Move in', 'Film the first-night arc', 'Close the apartment goal on camera'] },
 ]
 
 export const DOCUMENT_CHECKLIST = [
@@ -37,7 +37,7 @@ export const NEIGHBORHOOD_WORKFLOW = [
 export const URGENCY_AND_TRACKING = [
   'Keep every option in one tracker: address, rent, total move-in cost, commute, score, status, next action.',
   'Score each place on the same 1–10 scale immediately after viewing, while it\'s fresh.',
-  'Set a personal deadline ("lease signed by Day 50") and work backward — urgency you create beats urgency you wait for.',
+  'Set a personal deadline ("lease signed by Day 60") and work backward — urgency you create beats urgency you wait for.',
   'When a place scores 8+, be ready to apply the same day — hesitation is how you lose NYC apartments.',
   'Always keep a #2 alive so you never negotiate from desperation.',
   'Review the tracker every Sunday in the weekly review and prune dead options.',

@@ -8,7 +8,7 @@ export function Body() {
       <Disclaimer>{BODY_DISCLAIMER}</Disclaimer>
       <Thesis text={BODY_THESIS} accent="#5b9d78" label="Body Thesis" />
 
-      <Section title="The Habit System" subtitle="Six habits, repeated for 60 days. General and non-medical by design.">
+      <Section title="The Habit System" subtitle="Six habits, repeated for 80 days. General and non-medical by design.">
         <div className="grid gap-3 md:grid-cols-2">
           {BODY_HABITS.map((h) => (
             <Card key={h.name}>

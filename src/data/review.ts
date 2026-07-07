@@ -2,7 +2,7 @@
 // self-correcting. Rendered as an interactive form saved per week.
 
 export const REVIEW_THESIS =
-  'One honest hour every Sunday is what separates a 60-day system from a 60-day mood. You score the week, face the misses, and pre-decide next week so Monday runs itself.'
+  'One honest hour every Sunday is what separates an 80-day system from an 80-day mood. You score the week, face the misses, and pre-decide next week so Monday runs itself.'
 
 export interface WeeklyReview {
   weekNumber: number

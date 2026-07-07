@@ -21,7 +21,7 @@ export const DAILY_CHECKLIST: ChecklistItem[] = [
   { id: 'postmarket', label: 'Post-market review written', goal: 'Trading' },
 
   // Career
-  { id: 'outreach', label: 'Outreach / networking touches sent', goal: 'Career', detail: 'Even 3 messages compounds over 60 days' },
+  { id: 'outreach', label: 'Outreach / networking touches sent', goal: 'Career', detail: 'Even 3 messages compounds over 80 days' },
   { id: 'build', label: 'Moved a build/portfolio project forward', goal: 'Career' },
   { id: 'learn', label: 'Studied gen-AI / learned something sharable', goal: 'Career' },
 

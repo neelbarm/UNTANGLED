@@ -2,13 +2,13 @@ import type { ContentPillar, ReelIdea, Series } from './types'
 
 // ---------------------------------------------------------------------------
 // CONTENT STRATEGY
-// The account is one story: a young founder publicly running a 60-day system to
+// The account is one story: a young founder publicly running an 80-day system to
 // change his body, his trading discipline, his career, and his address — using
 // AI tools the whole way. High-agency, disciplined, aspirational, but real.
 // ---------------------------------------------------------------------------
 
 export const ACCOUNT_PROMISE =
-  'Follow a young founder run a 60-day operating system in public: lose 10 lbs, trade with real discipline, break into VC/AI, and move to NYC — no hype, just receipts.'
+  'Follow a young founder run an 80-day operating system in public: lose 10 lbs, trade with real discipline, break into VC/AI, and move to NYC — no hype, just receipts.'
 
 export const CONTENT_PILLARS: ContentPillar[] = [
   {
@@ -62,13 +62,13 @@ export const STORYLINES = [
   },
   {
     name: 'The Countdown to NYC',
-    arc: 'A literal geographic goal with a deadline. Day 1 you\'re planning; by Day 60 you\'re filming your first night in the apartment. Everyone wants to see if you make it.',
+    arc: 'A literal geographic goal with a deadline. Day 1 you\'re planning; by Day 80 you\'re filming your first night in the apartment. Everyone wants to see if you make it.',
   },
 ]
 
 export const HOOKS = [
-  'Day {N} of 60. Here\'s the scoreboard.',
-  'I\'m trying to do 4 impossible things in 60 days. Here\'s today.',
+  'Day {N} of 80. Here\'s the scoreboard.',
+  'I\'m trying to do 4 impossible things in 80 days. Here\'s today.',
   'It\'s 5am and I don\'t want to. Let\'s go anyway.',
   'I almost broke my #1 trading rule today.',
   'Everyone said I couldn\'t trade, build, and get shredded at once.',
@@ -93,7 +93,7 @@ export const CAPTION_FORMULAS = [
   'Vulnerable admission + lesson. ("I broke a rule today and it cost me. Here\'s the fix I\'m installing.")',
   'Numbered list in the caption for saves. ("3 things I do every market open: 1) ... 2) ... 3) ...")',
   'Cliffhanger to next post. ("Tomorrow I find out if I got the apartment. Follow so you don\'t miss it.")',
-  'Direct CTA to follow the journey. ("60-day challenge, all 4 goals in public. Day {N}. Follow the scoreboard.")',
+  'Direct CTA to follow the journey. ("80-day challenge, all 4 goals in public. Day {N}. Follow the scoreboard.")',
 ]
 
 export const SERIES: Series[] = [
@@ -136,7 +136,7 @@ export const SERIES: Series[] = [
 ]
 
 export const ADDICTIVE_MECHANICS = [
-  'Number the days on screen ("Day 23/60") — a visible countdown creates completion pressure to keep watching.',
+  'Number the days on screen ("Day 23/80") — a visible countdown creates completion pressure to keep watching.',
   'End each Reel with a one-line teaser for tomorrow so the next post is pre-sold.',
   'Run the weekly Scoreboard as appointment content — same day, same format, real numbers.',
   'Let the audience vote: "Which goal should I prioritize this week?" — participation = retention.',
@@ -145,7 +145,7 @@ export const ADDICTIVE_MECHANICS = [
   'Pin a "start here — Day 1" Reel so new followers binge the arc from the beginning.',
   'Reply to comments on camera; turn the best questions into the next Reel.',
   'Create a signature phrase/sign-off so regulars feel part of an inside group.',
-  'Tease the finale from the start: "In 60 days I\'ll either move to NYC or not. Watch."',
+  'Tease the finale from the start: "In 80 days I\'ll either move to NYC or not. Watch."',
 ]
 
 // ---------------------------------------------------------------------------
@@ -154,7 +154,7 @@ export const ADDICTIVE_MECHANICS = [
 
 export const REEL_IDEAS: ReelIdea[] = [
   // Meta / brand
-  { id: 1, goal: 'Meta', title: 'The Day 1 Manifesto', hook: 'Day 1 of 60. Four impossible goals. On the record.', film: 'You to camera, dead serious, listing the four goals with the countdown on screen.', caption: 'Publishing my goals so I can\'t hide. Day 1/60. Follow the scoreboard.', series: 'The Scoreboard' },
+  { id: 1, goal: 'Meta', title: 'The Day 1 Manifesto', hook: 'Day 1 of 80. Four impossible goals. On the record.', film: 'You to camera, dead serious, listing the four goals with the countdown on screen.', caption: 'Publishing my goals so I can\'t hide. Day 1/80. Follow the scoreboard.', series: 'The Scoreboard' },
   { id: 2, goal: 'Meta', title: 'The Whole System in 30 Seconds', hook: 'Give me 30 seconds and I\'ll show you how I run 4 goals at once.', film: 'Screen-record of your Notion/dashboard + fast cuts of each goal in action.', caption: 'The operating system behind the challenge. Save this.', series: 'The System' },
   { id: 3, goal: 'Meta', title: 'The Weekly Scoreboard Reveal', hook: 'Week 3 scoreboard. No spin.', film: 'You revealing the four numbers on a whiteboard/screen, one win + one miss.', caption: 'The numbers don\'t care about excuses. Which one should I fix first?', series: 'The Scoreboard' },
   { id: 4, goal: 'Meta', title: '5am to Market Open POV', hook: 'It\'s 5am and I don\'t want to. Watch anyway.', film: 'POV fast-cut: alarm → gym → subway → desk → the 9:30 bell.', caption: 'The two hours that decide the whole day.', series: '5am to Market Open' },
@@ -197,5 +197,5 @@ export const REEL_IDEAS: ReelIdea[] = [
   { id: 33, goal: 'Apartment', title: 'My NYC Neighborhood Shortlist', hook: 'I narrowed all of NYC down to 3 neighborhoods. Here\'s how.', film: 'Map + b-roll of each area with your criteria overlaid.', caption: 'Commute, budget, and vibe. My 3 finalists — which would you pick?', series: 'Rate This Apartment' },
   { id: 34, goal: 'Apartment', title: 'The Apartment Application Speed Run', hook: 'When you find the one, you have an hour. Here\'s my go-bag.', film: 'Show your pre-assembled document folder ready to submit instantly.', caption: 'NYC apartments go in hours. Preparation is the whole game.' },
   { id: 35, goal: 'Apartment', title: 'Testing the Commute Before I Sign', hook: 'I don\'t sign a lease until I\'ve done the commute myself.', film: 'POV of actually riding the commute to campus/where you trade.', caption: 'The listing lies. The commute doesn\'t. Always test it.', series: 'Rate This Apartment' },
-  { id: 36, goal: 'Apartment', title: 'First Night in the NYC Apartment', hook: 'Day 60. This is the apartment I said I\'d get on Day 1.', film: 'Empty apartment, keys in hand, emotional first-night walkthrough.', caption: '60 days ago this was just a goal on camera. Receipts.', series: 'The Scoreboard' },
+  { id: 36, goal: 'Apartment', title: 'First Night in the NYC Apartment', hook: 'Day 80. This is the apartment I said I\'d get on Day 1.', film: 'Empty apartment, keys in hand, emotional first-night walkthrough.', caption: '80 days ago this was just a goal on camera. Receipts.', series: 'The Scoreboard' },
 ]

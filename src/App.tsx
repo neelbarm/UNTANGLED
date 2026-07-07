@@ -119,13 +119,13 @@ export default function App() {
           className="aurora absolute bottom-[-20%] left-[30%] h-[45vh] w-[45vh] rounded-full opacity-20 blur-[130px]"
           style={{ background: 'radial-gradient(circle, var(--accent-2), transparent 65%)', animationDelay: '-14s' }}
         />
-        {/* Ghost "60" watermark */}
+        {/* Ghost "80" watermark */}
         <div
           aria-hidden
           className="absolute -bottom-24 -right-10 select-none text-[26rem] font-black leading-none opacity-40"
           style={{ WebkitTextStroke: '1.5px var(--line)', color: 'transparent' }}
         >
-          60
+          80
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export default function App() {
         <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:px-6">
           <button onClick={() => setTab('today')} className="flex shrink-0 items-center gap-2.5">
             <span className="flex h-7 w-7 items-center justify-center rounded-lg text-[13px] font-black text-white" style={{ backgroundImage: 'linear-gradient(135deg, var(--accent), var(--accent-2))' }}>
-              60
+              80
             </span>
             <span className="hidden text-[15px] font-semibold tracking-tight text-ink sm:block">Neel Barmecha</span>
           </button>
@@ -209,7 +209,7 @@ export default function App() {
         </AnimatePresence>
 
         <footer className="mt-16 border-t border-line pt-8 text-center text-[13px] text-faint">
-          Built for visible life change in public · 60 days · 4 goals · Not medical or financial advice.
+          Built for visible life change in public · 80 days · 4 goals · Not medical or financial advice.
         </footer>
       </main>
     </div>

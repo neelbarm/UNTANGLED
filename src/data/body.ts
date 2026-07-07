@@ -1,12 +1,12 @@
 // Habit system for the 10-lb goal. Deliberately GENERAL and NON-MEDICAL:
 // consistency, tracking, and routine — not diets, supplements, or clinical
-// advice. The whole strategy is boring habits repeated for 60 days.
+// advice. The whole strategy is boring habits repeated for 80 days.
 
 export const BODY_DISCLAIMER =
   'This is a general, habit-based accountability system — not medical, nutritional, or clinical advice. It tracks routines and consistency only. For anything health-related (nutrition plans, training safety, weight targets), talk to a qualified professional.'
 
 export const BODY_THESIS =
-  'Ten pounds in 60 days is a consistency problem, not a willpower problem. You don\'t need a perfect plan — you need the same repeatable habits logged every day and a trend line that points down.'
+  'Ten pounds in 80 days is a consistency problem, not a willpower problem. You don\'t need a perfect plan — you need the same repeatable habits logged every day and a trend line that points down.'
 
 export const BODY_HABITS = [
   {

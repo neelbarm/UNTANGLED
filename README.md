@@ -1,7 +1,7 @@
-# 60-Day Operating System
+# 80-Day Operating System
 
-A personal challenge dashboard for **Neel Barmecha** — a founder + student running a
-60-day, four-goal sprint in public and documenting it as Instagram Reels.
+A personal challenge dashboard for **Neel Barmecha** — a founder + student running an
+80-day, four-goal sprint in public and documenting it as Instagram Reels.
 
 Four goals, one system:
 
@@ -23,8 +23,8 @@ weekly reviews all persist in your browser (localStorage). No backend, no accoun
 
 | Tab | What it does |
 | --- | --- |
-| **Today** | Day X of 60, a checkable daily flow, the daily non-negotiables + trackers |
-| **Plan** | The 60-day master plan in weekly themes and phases |
+| **Today** | Day X of 80, a checkable daily flow, the daily non-negotiables + trackers |
+| **Plan** | The 80-day master plan in weekly themes and phases |
 | **Flow** | The daily flow template (no clock times) + the week's fixed anchors |
 | **Content** | Pillars, hooks, series, and a 30+ Reel idea bank (filterable by goal) |
 | **Career** | VC/AI job-search system: outreach, applications, proof-of-work |

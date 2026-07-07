@@ -33,12 +33,12 @@ function CountUpDay({ day }: { day: number }) {
   return <>{display}</>
 }
 
-/** 60 dots, one per day — the challenge at a glance. Today pulses, won days burn. */
+/** 80 dots, one per day — the challenge at a glance. Today pulses, won days burn. */
 function DayGrid({ day, won }: { day: number; won: Set<number> }) {
   return (
     <motion.div
       className="mx-auto mt-8 grid max-w-md gap-2"
-      style={{ gridTemplateColumns: 'repeat(15, minmax(0, 1fr))' }}
+      style={{ gridTemplateColumns: 'repeat(16, minmax(0, 1fr))' }}
       variants={{ hidden: {}, show: { transition: { staggerChildren: 0.014, delayChildren: 0.3 } } }}
       initial="hidden"
       animate="show"
@@ -250,7 +250,7 @@ export function Today({ store }: { store: Store }) {
             </div>
           )}
 
-          {/* 60 dots — one per day, flames on won days */}
+          {/* 80 dots — one per day, flames on won days */}
           <DayGrid day={day} won={won} />
 
           {streak > 0 && (

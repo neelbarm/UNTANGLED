@@ -1,7 +1,7 @@
-// Day-X math for the 60-day challenge. Everything is computed from a single
+// Day-X math for the 80-day challenge. Everything is computed from a single
 // user-set start date so the whole dashboard stays in sync.
 
-export const CHALLENGE_LENGTH = 60
+export const CHALLENGE_LENGTH = 80
 
 /** Return YYYY-MM-DD for a Date in local time (stable key for per-day records). */
 export function toISODate(d: Date): string {
@@ -26,7 +26,7 @@ export function daysBetween(aISO: string, bISO: string): number {
 
 /**
  * Given a start date and "today", return the current challenge day (1-based).
- * Clamped to the 1..60 window; returns 0 before the challenge begins.
+ * Clamped to the 1..80 window; returns 0 before the challenge begins.
  */
 export function challengeDay(startISO: string, todayISO: string): number {
   const diff = daysBetween(startISO, todayISO)

@@ -4,7 +4,7 @@ import { Card, Section } from './ui'
 export function Plan() {
   return (
     <div>
-      <Section title="The 60-Day Master Plan" subtitle="Three phases, nine weeks. One theme per week — all four goals always moving.">
+      <Section title="The 80-Day Master Plan" subtitle="Three phases, nine weeks. One theme per week — all four goals always moving.">
         <div className="grid gap-3 md:grid-cols-3">
           {PHASES.map((p) => (
             <Card key={p.name}>

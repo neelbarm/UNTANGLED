@@ -50,7 +50,7 @@ export function Review({ store }: { store: Store }) {
               onChange={(e) => setWeek(Number(e.target.value))}
               className="rounded-lg border border-line bg-elevated px-3 py-1.5 text-sm text-ink outline-none focus:border-accent"
             >
-              {Array.from({ length: 9 }, (_, i) => i + 1).map((w) => (
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((w) => (
                 <option key={w} value={w}>
                   Week {w}
                   {reviews[w] ? ' ✓' : ''}

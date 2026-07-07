@@ -46,7 +46,7 @@ export const DAILY_FLOW: FlowPhase[] = [
 
 // The real fixed rhythm of the week, captured as anchors (no clock times).
 export const WEEKLY_ANCHORS: string[] = [
-  'Gym + weigh-in every morning — same wake time all 60 days.',
+  'Gym + weigh-in every morning — same wake time all 80 days.',
   'Trade the NY market open every market day — never when tilted or rushed.',
   'Classes Mon + Wed (12–6) and Tue + Thu (8–5) — all end July 23. Trade the open first, film + build in the gaps.',
   'Running 7 prop-firm evaluations at once — the SAME rules on every account; the risk cap is non-negotiable.',

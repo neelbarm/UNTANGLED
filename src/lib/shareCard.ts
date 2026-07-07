@@ -50,7 +50,7 @@ export function downloadShareCard(d: ShareData) {
   g.fillText('N E E L   B A R M E C H A', center, 170)
   g.fillStyle = 'rgba(255,255,255,0.35)'
   g.font = `500 26px ${FONT}`
-  g.fillText('6 0 - D A Y   O P E R A T I N G   S Y S T E M', center, 218)
+  g.fillText('8 0 - D A Y   O P E R A T I N G   S Y S T E M', center, 218)
 
   // --- Giant day number -------------------------------------------------------
   const grad = g.createLinearGradient(center - 320, 0, center + 320, 0)
@@ -68,9 +68,9 @@ export function downloadShareCard(d: ShareData) {
   g.font = `700 46px ${FONT}`
   g.fillText(`Week ${d.weekNumber} — ${d.weekTitle}`, center, 745)
 
-  // --- 60-dot grid (15 x 4) ---------------------------------------------------
-  const cols = 15
-  const spacing = 60
+  // --- 80-dot grid (16 x 5) ---------------------------------------------------
+  const cols = 16
+  const spacing = 56
   const gridW = (cols - 1) * spacing
   const x0 = (W - gridW) / 2
   const y0 = 860
