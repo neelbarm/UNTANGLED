@@ -1,12 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import { animate, motion, useScroll, useTransform } from 'framer-motion'
-import { CHALLENGE_LENGTH, challengeDay, prettyDate, weekdayLong, weekOfDay } from '../lib/dates'
+import { addDaysISO, CHALLENGE_LENGTH, challengeDay, prettyDate, weekdayLong, weekOfDay } from '../lib/dates'
 import { WEEK_THEMES } from '../data/masterPlan'
 import { DAILY_FLOW, DAY_CONTEXT } from '../data/dailyFlow'
 import { DAILY_CHECKLIST } from '../data/dailyChecklist'
 import { GOAL_META } from '../data/types'
-import type { Store } from '../store'
+import type { DayRecord, Store } from '../store'
+import { fanfare } from '../lib/sound'
+import { downloadShareCard } from '../lib/shareCard'
 import { AnimatedCheck, GoalTag, MotionGroup, MotionItem, ProgressBar, Section, Stat } from './ui'
+
+// A day is "won" when 80%+ of the flow OR the non-negotiables got ticked.
+const WIN_THRESHOLD = 0.8
+function isWonRecord(rec: DayRecord | undefined, flowTotal: number, checkTotal: number): boolean {
+  if (!rec) return false
+  const f = Object.values(rec.flow ?? {}).filter(Boolean).length
+  const c = Object.values(rec.checklist ?? {}).filter(Boolean).length
+  return f / flowTotal >= WIN_THRESHOLD || c / checkTotal >= WIN_THRESHOLD
+}
 
 /** The big number counts up from 0 on load — a tiny product-launch moment. */
 function CountUpDay({ day }: { day: number }) {
@@ -22,8 +33,8 @@ function CountUpDay({ day }: { day: number }) {
   return <>{display}</>
 }
 
-/** 60 dots, one per day — the challenge at a glance. Today pulses. */
-function DayGrid({ day }: { day: number }) {
+/** 60 dots, one per day — the challenge at a glance. Today pulses, won days burn. */
+function DayGrid({ day, won }: { day: number; won: Set<number> }) {
   return (
     <motion.div
       className="mx-auto mt-8 grid max-w-md gap-2"
@@ -35,8 +46,16 @@ function DayGrid({ day }: { day: number }) {
     >
       {Array.from({ length: CHALLENGE_LENGTH }, (_, i) => {
         const n = i + 1
-        const done = n < day
+        const past = n < day
         const current = n === day
+        const isWon = won.has(n)
+        const background = isWon
+          ? 'linear-gradient(135deg, #ff9d2e, #ff5e3a)' // flame — day was won
+          : current
+            ? 'linear-gradient(135deg, var(--accent), var(--accent-2))'
+            : past
+              ? 'var(--line-strong)' // elapsed but not won
+              : 'var(--elevated)' // future
         return (
           <motion.span
             key={n}
@@ -46,9 +65,10 @@ function DayGrid({ day }: { day: number }) {
             }}
             className={`mx-auto h-2.5 w-2.5 rounded-full ${current ? 'pulse-dot' : ''}`}
             style={{
-              background: done || current ? 'linear-gradient(135deg, var(--accent), var(--accent-2))' : 'var(--elevated)',
+              background,
+              boxShadow: isWon ? '0 0 8px rgba(255, 138, 46, 0.7)' : undefined,
             }}
-            title={`Day ${n}`}
+            title={`Day ${n}${isWon ? ' · won 🔥' : ''}`}
           />
         )
       })}
@@ -125,7 +145,7 @@ function GoalMarquee() {
 }
 
 export function Today({ store }: { store: Store }) {
-  const { startDate, setStartDate, todayISO, getDay, toggleChecklist, toggleFlow, updateDay } = store
+  const { startDate, setStartDate, todayISO, getDay, toggleChecklist, toggleFlow, updateDay, days } = store
   const day = challengeDay(startDate, todayISO)
   const week = Math.max(1, weekOfDay(day))
   const theme = WEEK_THEMES[Math.min(week, WEEK_THEMES.length) - 1]
@@ -152,9 +172,36 @@ export function Today({ store }: { store: Store }) {
   useEffect(() => {
     if ((allFlow && !prevDone.current.flow) || (allChecks && !prevDone.current.checks)) {
       setCelebrate((c) => c + 1)
+      fanfare()
     }
     prevDone.current = { flow: allFlow, checks: allChecks }
   }, [allFlow, allChecks])
+
+  // Won days + current streak (consecutive won days ending today/yesterday).
+  const won = new Set<number>()
+  for (let n = 1; n <= Math.min(Math.max(day, 0), CHALLENGE_LENGTH); n++) {
+    if (isWonRecord(days[addDaysISO(startDate, n - 1)], flowItems.length, DAILY_CHECKLIST.length)) {
+      won.add(n)
+    }
+  }
+  let streak = 0
+  for (let n = won.has(day) ? day : day - 1; n >= 1 && won.has(n); n--) streak++
+
+  function shareCard() {
+    downloadShareCard({
+      day: Math.max(1, day),
+      total: CHALLENGE_LENGTH,
+      dateLabel: prettyDate(todayISO),
+      weekTitle: theme.title,
+      weekNumber: week,
+      flowDone,
+      flowTotal: flowItems.length,
+      checkDone: checkedCount,
+      checkTotal: DAILY_CHECKLIST.length,
+      streak,
+      won,
+    })
+  }
 
   return (
     <div>
@@ -203,17 +250,42 @@ export function Today({ store }: { store: Store }) {
             </div>
           )}
 
-          {/* 60 dots — one per day */}
-          <DayGrid day={day} />
-          <label className="mt-6 inline-flex items-center gap-2 text-xs text-faint">
-            <span>Start date</span>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value || todayISO)}
-              className="rounded-lg border border-line bg-card px-2.5 py-1 text-ink outline-none backdrop-blur-xl focus:border-accent"
-            />
-          </label>
+          {/* 60 dots — one per day, flames on won days */}
+          <DayGrid day={day} won={won} />
+
+          {streak > 0 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22, delay: 0.6 }}
+              className="mt-5 inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 text-[13px] font-semibold backdrop-blur-xl"
+              style={{ borderColor: 'rgba(255,138,46,0.4)', background: 'rgba(255,138,46,0.1)' }}
+            >
+              <span aria-hidden>🔥</span>
+              <span className="text-ink">
+                {streak}-day streak{streak >= 7 ? ' — unstoppable' : ''}
+              </span>
+            </motion.div>
+          )}
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+            <button
+              onClick={shareCard}
+              className="rounded-full px-5 py-2.5 text-[13px] font-semibold text-white transition-transform hover:scale-105 active:scale-95"
+              style={{ backgroundImage: 'linear-gradient(120deg, var(--accent), var(--accent-2))' }}
+            >
+              Share today's card ↓
+            </button>
+            <label className="inline-flex items-center gap-2 text-xs text-faint">
+              <span>Start date</span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value || todayISO)}
+                className="rounded-lg border border-line bg-card px-2.5 py-1 text-ink outline-none backdrop-blur-xl focus:border-accent"
+              />
+            </label>
+          </div>
 
           {!notStarted && (
             <div

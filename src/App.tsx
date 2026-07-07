@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useStore } from './store'
 import { useTheme } from './hooks/useTheme'
+import { useLocalStorage } from './hooks/useLocalStorage'
+import { setSoundEnabled } from './lib/sound'
 import { CHALLENGE_LENGTH, challengeDay } from './lib/dates'
 import { Today } from './components/Today'
 import { Plan } from './components/Plan'
@@ -73,6 +75,12 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [tab])
+
+  // UI sounds (tick + fanfare) — persisted preference, on by default.
+  const [sound, setSound] = useLocalStorage<boolean>('sixty:sound', true)
+  useEffect(() => {
+    setSoundEnabled(sound)
+  }, [sound])
 
   // The aurora leans toward the cursor — the page feels alive, not static.
   const mx = useMotionValue(0.5)
@@ -159,6 +167,14 @@ export default function App() {
           </nav>
 
           <ProgressRing day={day} />
+          <button
+            onClick={() => setSound((s) => !s)}
+            className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors hover:text-ink sm:flex"
+            aria-label="Toggle sound"
+            title={sound ? 'Sound on' : 'Sound off'}
+          >
+            {sound ? '♪' : '−'}
+          </button>
           <button
             onClick={toggleTheme}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors hover:text-ink"

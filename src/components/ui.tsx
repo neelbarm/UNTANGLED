@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 're
 import { motion } from 'framer-motion'
 import { GOAL_META, type Goal } from '../data/types'
 import { fadeUp, springy, staggerContainer } from '../lib/motion'
+import { tick } from '../lib/sound'
 
 const revealViewport = { once: true, margin: '-60px' }
 
@@ -173,7 +174,10 @@ export function AnimatedCheck({ on, color }: { on: boolean; color?: string }) {
   const [burst, setBurst] = useState(0)
 
   useEffect(() => {
-    if (on && !prev.current) setBurst((b) => b + 1) // false -> true edge only
+    if (on && !prev.current) {
+      setBurst((b) => b + 1) // false -> true edge only
+      tick()
+    }
     prev.current = on
   }, [on])
 
