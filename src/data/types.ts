@@ -32,19 +32,16 @@ export interface ChecklistItem {
   detail?: string
 }
 
-export interface ScheduleBlock {
-  time: string
+export interface FlowItem {
+  id: string
   label: string
   goal: Goal
   note?: string
 }
 
-export interface DaySchedule {
-  key: string // 'mon', 'tue', ...
-  day: string
-  type: 'Class' | 'Build' | 'Reset'
-  headline: string
-  blocks: ScheduleBlock[]
+export interface FlowPhase {
+  phase: string // event-based, not a clock time: 'Morning', 'Market Open', ...
+  items: FlowItem[]
 }
 
 export interface ReelIdea {

@@ -1,20 +1,22 @@
-import { CHALLENGE_LENGTH, challengeDay, prettyDate, weekOfDay } from '../lib/dates'
+import { CHALLENGE_LENGTH, challengeDay, prettyDate, weekdayLong, weekOfDay } from '../lib/dates'
 import { WEEK_THEMES } from '../data/masterPlan'
-import { WEEKLY_SCHEDULE } from '../data/weeklySchedule'
+import { DAILY_FLOW, DAY_CONTEXT } from '../data/dailyFlow'
 import { DAILY_CHECKLIST } from '../data/dailyChecklist'
 import { GOAL_META } from '../data/types'
 import type { Store } from '../store'
-import { Card, GoalTag, ProgressBar, Section, Stat } from './ui'
+import { GoalTag, ProgressBar, Section, Stat } from './ui'
 
 export function Today({ store }: { store: Store }) {
-  const { startDate, setStartDate, todayISO, getDay, toggleChecklist, updateDay } = store
+  const { startDate, setStartDate, todayISO, getDay, toggleChecklist, toggleFlow, updateDay } = store
   const day = challengeDay(startDate, todayISO)
   const week = Math.max(1, weekOfDay(day))
   const theme = WEEK_THEMES[Math.min(week, WEEK_THEMES.length) - 1]
   const weekdayKey = new Date().toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase().slice(0, 3)
-  const schedule = WEEKLY_SCHEDULE.find((d) => d.key === weekdayKey) ?? WEEKLY_SCHEDULE[0]
+  const dayContext = DAY_CONTEXT[weekdayKey]
   const rec = getDay(todayISO)
 
+  const flowItems = DAILY_FLOW.flatMap((p) => p.items)
+  const flowDone = flowItems.filter((i) => rec.flow[i.id]).length
   const checkedCount = DAILY_CHECKLIST.filter((i) => rec.checklist[i.id]).length
   const notStarted = day === 0
 
@@ -34,6 +36,11 @@ export function Today({ store }: { store: Store }) {
               <span className="text-lg text-white/40">/ {CHALLENGE_LENGTH}</span>
             </div>
             <div className="mt-1 text-sm text-white/50">{prettyDate(todayISO)}</div>
+            {dayContext && (
+              <div className="mt-2 inline-flex rounded-full border border-white/15 bg-white/5 px-2.5 py-1 text-xs text-white/70">
+                {dayContext}
+              </div>
+            )}
           </div>
           <label className="text-xs text-white/50">
             <span className="mr-2">Start date</span>
@@ -64,28 +71,56 @@ export function Today({ store }: { store: Store }) {
         )}
       </div>
 
-      {/* Today's schedule */}
-      <Section title={`Today — ${schedule.day}`} subtitle={schedule.headline}>
-        <Card>
-          <ol className="space-y-1.5">
-            {schedule.blocks.map((b, i) => (
-              <li key={i} className="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-white/5">
-                <span className="w-24 shrink-0 font-mono text-xs text-white/40">{b.time}</span>
-                <span className="flex-1 text-sm text-white/80">
-                  {b.label}
-                  {b.note && <span className="ml-2 text-xs text-white/35">· {b.note}</span>}
-                </span>
-                <GoalTag goal={b.goal} small />
-              </li>
-            ))}
-          </ol>
-        </Card>
+      {/* Today's flow — check off what you did, in order, no clock times */}
+      <Section
+        title={`Today's Flow — ${weekdayLong(todayISO)}`}
+        subtitle={`Work through it and tick what you did · ${flowDone}/${flowItems.length} done`}
+      >
+        <div className="mb-3">
+          <ProgressBar value={flowDone} max={flowItems.length} accent="#ff7a18" />
+        </div>
+        <div className="space-y-4">
+          {DAILY_FLOW.map((phase) => (
+            <div key={phase.phase}>
+              <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-ember-400">{phase.phase}</div>
+              <div className="space-y-2">
+                {phase.items.map((item) => {
+                  const on = !!rec.flow[item.id]
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => toggleFlow(todayISO, item.id)}
+                      className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition ${
+                        on ? 'border-ember-500/40 bg-ember-500/5' : 'border-white/10 bg-ink-900 hover:border-white/20'
+                      }`}
+                    >
+                      <span
+                        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border text-xs ${
+                          on ? 'border-ember-500 bg-ember-500 text-ink-950' : 'border-white/25 text-transparent'
+                        }`}
+                      >
+                        ✓
+                      </span>
+                      <span className="flex-1">
+                        <span className={`text-sm ${on ? 'text-white/50 line-through' : 'text-white/85'}`}>
+                          {item.label}
+                        </span>
+                        {item.note && <span className="ml-2 text-xs text-white/35">· {item.note}</span>}
+                      </span>
+                      <GoalTag goal={item.goal} small />
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
       </Section>
 
-      {/* Daily checklist */}
+      {/* Daily non-negotiables — the minimum that must be true every day */}
       <Section
-        title="Daily checklist"
-        subtitle={`The repeatable challenge-day minimum · ${checkedCount}/${DAILY_CHECKLIST.length} done`}
+        title="Daily Non-Negotiables"
+        subtitle={`The minimum bar for every challenge day · ${checkedCount}/${DAILY_CHECKLIST.length} done`}
       >
         <div className="mb-3">
           <ProgressBar value={checkedCount} max={DAILY_CHECKLIST.length} accent="#3ddc84" />
@@ -149,9 +184,9 @@ export function Today({ store }: { store: Store }) {
           />
         </div>
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label="Checklist done" value={`${checkedCount}/${DAILY_CHECKLIST.length}`} accent="#3ddc84" />
-          <Stat label="Challenge day" value={notStarted ? '—' : String(day)} accent="#ff9d4d" />
-          <Stat label="Current week" value={notStarted ? '—' : String(week)} accent="#5aa9ff" />
+          <Stat label="Flow done" value={`${flowDone}/${flowItems.length}`} accent="#ff9d4d" />
+          <Stat label="Non-negotiables" value={`${checkedCount}/${DAILY_CHECKLIST.length}`} accent="#3ddc84" />
+          <Stat label="Challenge day" value={notStarted ? '—' : String(day)} accent="#5aa9ff" />
           <Stat label="Days left" value={String(CHALLENGE_LENGTH - Math.max(0, day))} accent="#c78bff" />
         </div>
       </Section>

@@ -9,6 +9,7 @@ import type { WeeklyReview } from './data/review'
 
 export interface DayRecord {
   checklist: Record<string, boolean>
+  flow: Record<string, boolean>
   weight: string
   steps: string
   sleep: string
@@ -17,7 +18,7 @@ export interface DayRecord {
 }
 
 export function emptyDay(): DayRecord {
-  return { checklist: {}, weight: '', steps: '', sleep: '', scorecard: {}, notes: '' }
+  return { checklist: {}, flow: {}, weight: '', steps: '', sleep: '', scorecard: {}, notes: '' }
 }
 
 function todayISO(): string {
@@ -48,6 +49,16 @@ export function useStore() {
     })
   }
 
+  function toggleFlow(iso: string, itemId: string) {
+    setDays((prev) => {
+      const cur = prev[iso] ?? emptyDay()
+      return {
+        ...prev,
+        [iso]: { ...cur, flow: { ...cur.flow, [itemId]: !cur.flow[itemId] } },
+      }
+    })
+  }
+
   return {
     startDate,
     setStartDate,
@@ -55,6 +66,7 @@ export function useStore() {
     getDay,
     updateDay,
     toggleChecklist,
+    toggleFlow,
     apartments,
     setApartments,
     reviews,

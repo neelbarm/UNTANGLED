@@ -1,49 +1,41 @@
-import { WEEKLY_SCHEDULE } from '../data/weeklySchedule'
-import { Card, GoalTag, Section } from './ui'
-
-const TYPE_COLOR: Record<string, string> = {
-  Class: '#5aa9ff',
-  Build: '#ff9d4d',
-  Reset: '#c78bff',
-}
+import { DAILY_FLOW, WEEKLY_ANCHORS } from '../data/dailyFlow'
+import { Bullets, Card, GoalTag, Section } from './ui'
 
 export function Schedule() {
   return (
     <div>
       <Section
-        title="Weekly Schedule Template"
-        subtitle="Built around your real week: 5am gym, the NY market open, classes Tue/Wed/Fri, commute-as-content, building, and posting."
+        title="The Daily Flow"
+        subtitle="One repeatable flow you work through and tick off — no clock times, just the shape of the day. Check it off live on the Today tab."
       >
-        <div className="grid gap-3 lg:grid-cols-2">
-          {WEEKLY_SCHEDULE.map((d) => (
-            <Card key={d.key}>
-              <div className="mb-3 flex items-center justify-between">
-                <div>
-                  <div className="text-base font-semibold text-white">{d.day}</div>
-                  <div className="text-xs text-white/50">{d.headline}</div>
-                </div>
-                <span
-                  className="rounded-full px-2.5 py-1 text-xs font-medium"
-                  style={{ color: TYPE_COLOR[d.type], backgroundColor: `${TYPE_COLOR[d.type]}18` }}
-                >
-                  {d.type}
-                </span>
-              </div>
-              <ol className="space-y-1">
-                {d.blocks.map((b, i) => (
-                  <li key={i} className="flex items-center gap-2.5 rounded-md px-1.5 py-1 hover:bg-white/5">
-                    <span className="w-24 shrink-0 font-mono text-[11px] text-white/40">{b.time}</span>
+        <div className="grid gap-3 md:grid-cols-2">
+          {DAILY_FLOW.map((phase) => (
+            <Card key={phase.phase}>
+              <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-ember-400">{phase.phase}</div>
+              <ul className="space-y-1.5">
+                {phase.items.map((item) => (
+                  <li key={item.id} className="flex items-center gap-2.5 rounded-md px-1 py-1">
+                    <span className="h-4 w-4 shrink-0 rounded border border-white/25" />
                     <span className="flex-1 text-sm text-white/75">
-                      {b.label}
-                      {b.note && <span className="ml-1.5 text-[11px] text-white/35">· {b.note}</span>}
+                      {item.label}
+                      {item.note && <span className="ml-1.5 text-[11px] text-white/35">· {item.note}</span>}
                     </span>
-                    <GoalTag goal={b.goal} small />
+                    <GoalTag goal={item.goal} small />
                   </li>
                 ))}
-              </ol>
+              </ul>
             </Card>
           ))}
         </div>
+      </Section>
+
+      <Section
+        title="Weekly Anchors"
+        subtitle="The fixed rhythm of the week — the realities the daily flow bends around."
+      >
+        <Card>
+          <Bullets items={WEEKLY_ANCHORS} />
+        </Card>
       </Section>
     </div>
   )

@@ -14,7 +14,7 @@ import { Reference } from './components/Reference'
 const TABS = [
   { key: 'today', label: 'Today', emoji: '⚡' },
   { key: 'plan', label: 'Plan', emoji: '🗺️' },
-  { key: 'schedule', label: 'Schedule', emoji: '🕔' },
+  { key: 'schedule', label: 'Flow', emoji: '🧭' },
   { key: 'content', label: 'Content', emoji: '🎬' },
   { key: 'career', label: 'Career', emoji: '💼' },
   { key: 'apartment', label: 'Apartment', emoji: '🏙️' },
