@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { animate, motion, useScroll, useTransform } from 'framer-motion'
 import { CHALLENGE_LENGTH, challengeDay, prettyDate, weekdayLong, weekOfDay } from '../lib/dates'
 import { WEEK_THEMES } from '../data/masterPlan'
 import { DAILY_FLOW, DAY_CONTEXT } from '../data/dailyFlow'
@@ -6,6 +7,122 @@ import { DAILY_CHECKLIST } from '../data/dailyChecklist'
 import { GOAL_META } from '../data/types'
 import type { Store } from '../store'
 import { AnimatedCheck, GoalTag, MotionGroup, MotionItem, ProgressBar, Section, Stat } from './ui'
+
+/** The big number counts up from 0 on load — a tiny product-launch moment. */
+function CountUpDay({ day }: { day: number }) {
+  const [display, setDisplay] = useState(0)
+  useEffect(() => {
+    const controls = animate(0, day, {
+      duration: 1.1,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (v) => setDisplay(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [day])
+  return <>{display}</>
+}
+
+/** 60 dots, one per day — the challenge at a glance. Today pulses. */
+function DayGrid({ day }: { day: number }) {
+  return (
+    <motion.div
+      className="mx-auto mt-8 grid max-w-md gap-2"
+      style={{ gridTemplateColumns: 'repeat(15, minmax(0, 1fr))' }}
+      variants={{ hidden: {}, show: { transition: { staggerChildren: 0.014, delayChildren: 0.3 } } }}
+      initial="hidden"
+      animate="show"
+      aria-label={`${Math.max(0, day)} of ${CHALLENGE_LENGTH} days`}
+    >
+      {Array.from({ length: CHALLENGE_LENGTH }, (_, i) => {
+        const n = i + 1
+        const done = n < day
+        const current = n === day
+        return (
+          <motion.span
+            key={n}
+            variants={{
+              hidden: { opacity: 0, scale: 0 },
+              show: { opacity: 1, scale: 1, transition: { type: 'spring', stiffness: 400, damping: 22 } },
+            }}
+            className={`mx-auto h-2.5 w-2.5 rounded-full ${current ? 'pulse-dot' : ''}`}
+            style={{
+              background: done || current ? 'linear-gradient(135deg, var(--accent), var(--accent-2))' : 'var(--elevated)',
+            }}
+            title={`Day ${n}`}
+          />
+        )
+      })}
+    </motion.div>
+  )
+}
+
+/** Full-screen confetti burst — fires when the day hits 100%. */
+function Celebration({ trigger }: { trigger: number }) {
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    if (trigger === 0) return
+    setVisible(true)
+    const t = setTimeout(() => setVisible(false), 2200)
+    return () => clearTimeout(t)
+  }, [trigger])
+  if (!visible) return null
+  const colors = ['var(--accent)', 'var(--accent-2)', '#5b9d78', '#c0a24a', '#cf6b6b']
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-[70]" key={trigger}>
+      {Array.from({ length: 44 }, (_, i) => {
+        const dx = (Math.random() - 0.5) * 640
+        const up = -(120 + Math.random() * 260)
+        const rot = (Math.random() - 0.5) * 720
+        const size = 5 + Math.random() * 6
+        return (
+          <motion.span
+            key={i}
+            className="absolute left-1/2 top-1/2"
+            style={{
+              width: size,
+              height: size * 0.45,
+              borderRadius: 2,
+              backgroundColor: colors[i % colors.length],
+            }}
+            initial={{ x: 0, y: 0, opacity: 1, rotate: 0 }}
+            animate={{ x: dx, y: [0, up, 420], opacity: [1, 1, 0], rotate: rot }}
+            transition={{ duration: 1.7 + Math.random() * 0.5, ease: 'easeOut', delay: Math.random() * 0.12 }}
+          />
+        )
+      })}
+    </div>
+  )
+}
+
+const MARQUEE_GOALS = ['Lose 10 lbs', 'Trade with discipline', 'Break into VC / AI', 'Move to NYC']
+
+/** Infinite marquee of the four goals — the mission, always in motion. */
+function GoalMarquee() {
+  const half = (
+    <>
+      {MARQUEE_GOALS.map((g) => (
+        <span key={g} className="flex shrink-0 items-center gap-8">
+          <span>{g}</span>
+          <span aria-hidden className="h-1 w-1 rounded-full" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-2))' }} />
+        </span>
+      ))}
+    </>
+  )
+  return (
+    <div
+      className="mt-10 overflow-hidden py-1"
+      style={{
+        maskImage: 'linear-gradient(90deg, transparent, black 18%, black 82%, transparent)',
+        WebkitMaskImage: 'linear-gradient(90deg, transparent, black 18%, black 82%, transparent)',
+      }}
+    >
+      <div className="marquee-track flex w-max gap-8 text-[11px] font-semibold uppercase tracking-[0.3em] text-faint">
+        {half}
+        {half}
+      </div>
+    </div>
+  )
+}
 
 export function Today({ store }: { store: Store }) {
   const { startDate, setStartDate, todayISO, getDay, toggleChecklist, toggleFlow, updateDay } = store
@@ -21,38 +138,74 @@ export function Today({ store }: { store: Store }) {
   const checkedCount = DAILY_CHECKLIST.filter((i) => rec.checklist[i.id]).length
   const notStarted = day === 0
 
+  // Gentle parallax: the hero recedes as you scroll into the work below it.
+  const { scrollY } = useScroll()
+  const heroOpacity = useTransform(scrollY, [0, 480], [1, 0.15])
+  const heroScale = useTransform(scrollY, [0, 480], [1, 0.96])
+  const heroY = useTransform(scrollY, [0, 480], [0, 48])
+
+  // Celebrate finishing the whole day — flow or non-negotiables hitting 100%.
+  const allFlow = flowItems.length > 0 && flowDone === flowItems.length
+  const allChecks = checkedCount === DAILY_CHECKLIST.length
+  const prevDone = useRef({ flow: allFlow, checks: allChecks })
+  const [celebrate, setCelebrate] = useState(0)
+  useEffect(() => {
+    if ((allFlow && !prevDone.current.flow) || (allChecks && !prevDone.current.checks)) {
+      setCelebrate((c) => c + 1)
+    }
+    prevDone.current = { flow: allFlow, checks: allChecks }
+  }, [allFlow, allChecks])
+
   return (
     <div>
-      {/* Cinematic hero */}
-      <motion.div
-        className="mb-14 pt-4 text-center sm:pt-8"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="text-[13px] font-semibold uppercase tracking-[0.25em] text-accent">
-          {notStarted ? 'Challenge not started' : `Week ${week} · ${theme.phase}`}
-        </div>
-        <div className="mt-3 flex items-end justify-center gap-3">
-          <span className="grad-text text-7xl font-semibold leading-none tracking-tighter sm:text-8xl">
-            {notStarted ? '—' : `Day ${day}`}
-          </span>
-          <span className="pb-2 text-2xl font-medium text-faint sm:text-3xl">/ {CHALLENGE_LENGTH}</span>
-        </div>
-        <div className="mt-4 text-[15px] text-muted">{prettyDate(todayISO)}</div>
-        {dayContext && (
-          <div className="mt-4 inline-flex rounded-full border border-line bg-card px-4 py-1.5 text-[13px] text-muted backdrop-blur-xl">
-            {dayContext}
-          </div>
-        )}
+      <Celebration trigger={celebrate} />
 
-        <div className="mx-auto mt-8 max-w-lg">
-          <div className="mb-2 flex justify-between text-xs text-faint">
-            <span>Progress</span>
-            <span>{Math.round((Math.max(0, day) / CHALLENGE_LENGTH) * 100)}%</span>
+      {/* Cinematic hero */}
+      <motion.div style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}>
+        <motion.div
+          className="mb-14 pt-4 text-center sm:pt-8"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="text-[13px] font-semibold uppercase tracking-[0.25em] text-accent">
+            {notStarted ? 'Challenge not started' : `Week ${week} · ${theme.phase}`}
           </div>
-          <ProgressBar value={Math.max(0, day)} max={CHALLENGE_LENGTH} />
-          <label className="mt-4 inline-flex items-center gap-2 text-xs text-faint">
+          <div className="relative mt-3 flex items-end justify-center gap-3">
+            {/* Breathing glow behind the number */}
+            <motion.div
+              aria-hidden
+              className="absolute left-1/2 top-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[90px]"
+              style={{ background: 'radial-gradient(circle, var(--accent-glow), transparent 70%)' }}
+              animate={{ scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <span className="-mb-1 inline-block overflow-hidden pb-1">
+              <motion.span
+                className="shimmer-text inline-block text-7xl font-semibold leading-none tracking-tighter tabular-nums sm:text-9xl"
+                initial={{ y: '105%' }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+              >
+                {notStarted ? '—' : (
+                  <>
+                    Day <CountUpDay day={day} />
+                  </>
+                )}
+              </motion.span>
+            </span>
+            <span className="pb-2 text-2xl font-medium text-faint sm:text-3xl">/ {CHALLENGE_LENGTH}</span>
+          </div>
+          <div className="mt-4 text-[15px] text-muted">{prettyDate(todayISO)}</div>
+          {dayContext && (
+            <div className="mt-4 inline-flex rounded-full border border-line bg-card px-4 py-1.5 text-[13px] text-muted backdrop-blur-xl">
+              {dayContext}
+            </div>
+          )}
+
+          {/* 60 dots — one per day */}
+          <DayGrid day={day} />
+          <label className="mt-6 inline-flex items-center gap-2 text-xs text-faint">
             <span>Start date</span>
             <input
               type="date"
@@ -61,18 +214,39 @@ export function Today({ store }: { store: Store }) {
               className="rounded-lg border border-line bg-card px-2.5 py-1 text-ink outline-none backdrop-blur-xl focus:border-accent"
             />
           </label>
-        </div>
 
-        {!notStarted && (
-          <div className="mx-auto mt-8 max-w-xl rounded-3xl border border-line bg-card p-5 text-left backdrop-blur-xl">
-            <div className="text-[15px] font-semibold text-ink">This week — {theme.title}</div>
-            <div className="mt-1.5 text-[14px] leading-relaxed text-muted">{theme.focus}</div>
-            <div className="mt-3 flex items-center gap-2 text-[13px] text-accent">
-              <span aria-hidden>🎬</span>
-              <span>Flagship Reel: {theme.filmThis}</span>
+          {!notStarted && (
+            <div
+              className="mx-auto mt-8 max-w-xl rounded-3xl p-[1px]"
+              style={{
+                backgroundImage: 'linear-gradient(120deg, var(--accent), var(--accent-2), var(--accent))',
+                backgroundSize: '200% 200%',
+                animation: 'shimmer 6s linear infinite',
+              }}
+            >
+              <div className="rounded-[calc(1.5rem-1px)] p-5 text-left backdrop-blur-xl" style={{ background: 'var(--canvas)' }}>
+                <div className="text-[15px] font-semibold text-ink">This week — {theme.title}</div>
+                <div className="mt-1.5 text-[14px] leading-relaxed text-muted">{theme.focus}</div>
+                <div className="mt-3 flex items-center gap-2 text-[13px] text-accent">
+                  <span aria-hidden>🎬</span>
+                  <span>Flagship Reel: {theme.filmThis}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+
+          <GoalMarquee />
+
+          {/* Scroll cue */}
+          <motion.div
+            aria-hidden
+            className="mt-6 text-lg text-faint"
+            animate={{ y: [0, 7, 0], opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            ⌄
+          </motion.div>
+        </motion.div>
       </motion.div>
 
       {/* Today's flow — check off what you did, in order, no clock times */}

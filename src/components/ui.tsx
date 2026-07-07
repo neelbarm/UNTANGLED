@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { GOAL_META, type Goal } from '../data/types'
 import { fadeUp, springy, staggerContainer } from '../lib/motion'
@@ -26,7 +26,7 @@ export function Section({
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="mb-5">
-        <h2 className="text-2xl font-semibold tracking-[-0.02em] text-ink sm:text-[28px]">{title}</h2>
+        <h2 className="text-[26px] font-semibold tracking-[-0.03em] text-ink sm:text-[32px]">{title}</h2>
         {subtitle && <p className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-muted">{subtitle}</p>}
       </div>
       {children}
@@ -35,16 +35,44 @@ export function Section({
 }
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
+  // Cursor physics: the pointer position drives a soft spotlight glow AND a
+  // subtle 3D tilt (max ~5°), both via CSS vars so React never re-renders.
+  function track(e: MouseEvent<HTMLDivElement>) {
+    const el = e.currentTarget
+    const r = el.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width - 0.5
+    const py = (e.clientY - r.top) / r.height - 0.5
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+    el.style.setProperty('--my', `${e.clientY - r.top}px`)
+    el.style.setProperty('--ry', `${px * 5}deg`)
+    el.style.setProperty('--rx', `${-py * 5}deg`)
+  }
+  function reset(e: MouseEvent<HTMLDivElement>) {
+    e.currentTarget.style.setProperty('--rx', '0deg')
+    e.currentTarget.style.setProperty('--ry', '0deg')
+  }
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={revealViewport}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -4 }}
-      className={`rounded-3xl border border-line bg-card p-5 backdrop-blur-xl transition-shadow duration-300 hover:border-line-strong hover:shadow-glow ${className}`}
+      className="group"
+      style={{ perspective: 900 }}
     >
-      {children}
+      <div
+        onMouseMove={track}
+        onMouseLeave={reset}
+        className={`relative overflow-hidden rounded-3xl border border-line bg-card p-5 backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-200 ease-out group-hover:border-line-strong group-hover:shadow-glow ${className}`}
+        style={{ transform: 'rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))', transformStyle: 'preserve-3d' }}
+      >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ background: 'radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), var(--accent-soft), transparent 70%)' }}
+        />
+        <div className="relative">{children}</div>
+      </div>
     </motion.div>
   )
 }
@@ -139,19 +167,45 @@ export function Stat({ label, value, accent }: { label: string; value: string; a
   )
 }
 
-/** Animated checkbox — springy pop + check on toggle. */
+/** Animated checkbox — springy pop + a tiny particle burst when checked. */
 export function AnimatedCheck({ on, color }: { on: boolean; color?: string }) {
+  const prev = useRef(on)
+  const [burst, setBurst] = useState(0)
+
+  useEffect(() => {
+    if (on && !prev.current) setBurst((b) => b + 1) // false -> true edge only
+    prev.current = on
+  }, [on])
+
+  const c = color ?? 'var(--accent)'
   return (
     <span
-      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border"
+      className="relative flex h-5 w-5 shrink-0 items-center justify-center rounded-md border"
       style={{
-        borderColor: on ? color ?? 'var(--accent)' : 'var(--line-strong)',
-        backgroundColor: on ? color ?? 'var(--accent)' : 'transparent',
+        borderColor: on ? c : 'var(--line-strong)',
+        backgroundColor: on ? c : 'transparent',
       }}
     >
       <motion.svg width="12" height="12" viewBox="0 0 12 12" fill="none" initial={false} animate={{ scale: on ? 1 : 0 }} transition={springy}>
         <path d="M2.5 6.5L5 9L9.5 3.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
       </motion.svg>
+      {burst > 0 && (
+        <span key={burst} aria-hidden className="pointer-events-none absolute inset-0">
+          {Array.from({ length: 6 }, (_, i) => {
+            const angle = (i / 6) * Math.PI * 2
+            return (
+              <motion.span
+                key={i}
+                className="absolute left-1/2 top-1/2 h-1 w-1 rounded-full"
+                style={{ backgroundColor: c }}
+                initial={{ x: '-50%', y: '-50%', translateX: 0, translateY: 0, opacity: 1, scale: 1 }}
+                animate={{ translateX: Math.cos(angle) * 16, translateY: Math.sin(angle) * 16, opacity: 0, scale: 0.3 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              />
+            )
+          })}
+        </span>
+      )}
     </span>
   )
 }
